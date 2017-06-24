@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jlcedu.db.mapper.SystemMapper" >
+	<resultMap id="scheduleResultMap" type="com.jlcedu.entity.CourseSchedule" >
+		<result column="day" property="day" jdbcType="INTEGER" />
+		<result column="seq" property="seq" jdbcType="INTEGER" />
+		<result column="name1" property="name1" jdbcType="VARCHAR" />
+		<result column="name2" property="name2" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="selectScheduleAsTeacher" resultMap="scheduleResultMap" parameterType="java.lang.String">
+    	SELECT s.day,s.seq,cl.name AS name1,co.code AS name2 FROM t_sys_cource_schedule s 
+		INNER JOIN t_sys_course_rel r ON s.rel_id=r.id 
+		INNER JOIN t_sys_course co ON r.course_id=co.id 
+		INNER JOIN t_sys_class cl ON r.class_id=cl.id 
+		WHERE r.teacher_id=#{user_id} 
+		ORDER BY s.seq,s.day
+	</select>
+	<select id="selectScheduleAsStudent" resultMap="scheduleResultMap" parameterType="java.lang.String">
+    	SELECT sc.day,sc.seq,c.code AS name1,us.name AS name2 FROM t_sys_cource_schedule sc 
+		INNER JOIN t_sys_course_rel r ON sc.rel_id=r.id 
+		INNER JOIN t_sys_course c ON r.course_id=c.id 
+		INNER JOIN t_sys_user us ON r.teacher_id=us.id 
+		INNER JOIN t_sys_user_student st ON r.class_id=st.class_id 
+		WHERE st.id=#{user_id} 
+		ORDER BY sc.seq,sc.day
+	</select>
+</mapper>

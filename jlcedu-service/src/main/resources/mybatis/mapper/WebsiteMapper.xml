@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jlcedu.db.mapper.WebsiteMapper" >
+	<resultMap id="BannerResultMap" type="com.jlcedu.entity.Banner" >
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="image_prefix" property="imgPre" jdbcType="VARCHAR" />
+		<result column="image_suffix" property="imgSuf" jdbcType="VARCHAR" />
+		<result column="item_id" property="itemId" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="navigationResultMap" type="com.jlcedu.entity.Navigation" >
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="icon" property="icon" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="menuResultMap" type="com.jlcedu.entity.Menu" >
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="navigation_id" property="navigationId" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="itemMap" type="com.jlcedu.entity.Item" >
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="menu_id" property="menuId" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="origin" property="origin" jdbcType="VARCHAR" />
+		<result column="clicks" property="clicks" jdbcType="INTEGER" />
+		<result column="created_time" property="createdDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<!-- 加载框架导航 -->
+	<select id="selectNavigations" resultMap="navigationResultMap" parameterType="java.lang.String">
+    	SELECT id,name,icon FROM t_web_navigation WHERE scope='A' OR scope=#{client_type} ORDER BY sort ASC
+	</select>
+	<select id="selectMenus" resultMap="menuResultMap">
+    	SELECT id,navigation_id FROM t_web_menu ORDER BY navigation_id,sort ASC
+	</select>
+
+	<!-- 点击一级导航 -->
+	<select id="selectNavigationById" resultMap="navigationResultMap" parameterType="java.lang.Integer">
+    	SELECT id,name,icon FROM t_web_navigation WHERE id=#{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectMenuIdsByNavigationId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    	SELECT id FROM t_web_menu WHERE navigation_id=#{navigation_id,jdbcType=INTEGER} ORDER BY sort ASC
+	</select>
+	<select id="selectItemsByNavigationId" resultMap="itemMap" parameterType="java.lang.Integer">
+    	SELECT i.id,i.title,i.created_time FROM t_web_item i 
+		INNER JOIN t_web_menu m ON i.menu_id=m.id 
+		WHERE m.navigation_id=#{navigation_id,jdbcType=INTEGER}
+		ORDER BY i.created_time DESC
+	</select>
+
+	<!-- 点击二级导航 -->
+	<select id="selectNavigationsByMenuId" resultMap="navigationResultMap" parameterType="java.lang.Integer">
+    	SELECT n.id,n.name,n.icon FROM t_web_navigation n 
+		INNER JOIN t_web_menu m ON n.id=m.navigation_id 
+		WHERE m.id=#{menu_id,jdbcType=INTEGER}
+	</select>
+	<select id="selectMenuIdsByMenuId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    	SELECT a.id FROM t_web_menu a 
+		INNER JOIN t_web_menu b ON a.navigation_id=b.navigation_id 
+		WHERE b.id=#{id,jdbcType=INTEGER} 
+		ORDER BY a.sort ASC
+	</select>
+	<select id="selectItemsByMenuId" resultMap="itemMap" parameterType="java.lang.Integer">
+		SELECT id,title,created_time FROM t_web_item WHERE menu_id=#{menu_id,jdbcType=INTEGER} ORDER BY created_time DESC
+	</select>
+
+	<!-- 点击内容标题 -->
+	<select id="selectNavigationByItemId" resultMap="navigationResultMap" parameterType="java.lang.String">
+    	SELECT n.id,n.name,n.icon FROM t_web_navigation n 
+		INNER JOIN t_web_menu m ON n.id=m.navigation_id 
+		INNER JOIN t_web_item i ON m.id=i.menu_id 
+		WHERE i.id=#{item_id,jdbcType=VARCHAR}
+	</select>
+	<select id="selectMenuIdsByItemId" resultType="java.lang.Integer" parameterType="java.lang.String">
+    	SELECT a.id FROM t_web_menu a 
+		INNER JOIN t_web_menu b ON a.navigation_id=b.navigation_id 
+		INNER JOIN t_web_item i ON b.id=i.menu_id 
+		WHERE i.id=#{item_id,jdbcType=VARCHAR} 
+		ORDER BY a.sort ASC
+	</select>
+	<select id="selectItemById" resultMap="itemMap" parameterType="java.lang.String">
+		SELECT menu_id,title,content,origin,clicks,created_time FROM t_web_item WHERE id=#{id,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 加载首页轮播图 -->
+	<select id="selectBanners" resultMap="BannerResultMap">
+    	SELECT id,image_prefix,image_suffix,item_id FROM t_web_banner ORDER BY sort ASC
+	</select>
+</mapper>
