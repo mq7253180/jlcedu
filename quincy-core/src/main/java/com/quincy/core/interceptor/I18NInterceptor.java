@@ -23,7 +23,7 @@ public class I18NInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		initChain();
-		String locale = chainHead.support(request, response);
+		String locale = chainHead.support(request);
 		LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
 		localeResolver.setLocale(request, response, StringUtils.parseLocaleString(locale));
 		return true;
@@ -49,13 +49,13 @@ public class I18NInterceptor extends HandlerInterceptorAdapter {
 				if(chainHead==null) {
 					Support uriSupport = new Support() {
 						@Override
-						protected String resolve(HttpServletRequest request, HttpServletResponse response) {
+						protected String resolve(HttpServletRequest request) {
 							return CommonHelper.getFirstAsUri(request);
 						}
 					};
 					Support domainSupport = new Support() {
 						@Override
-						protected String resolve(HttpServletRequest request, HttpServletResponse response) {
+						protected String resolve(HttpServletRequest request) {
 							StringBuffer sb = request.getRequestURL();
 							int dotIndexOf = sb.indexOf(".");
 							return dotIndexOf==-1?null:sb.delete(dotIndexOf, sb.length()).delete(0, sb.indexOf("://")+3).toString();
@@ -63,25 +63,25 @@ public class I18NInterceptor extends HandlerInterceptorAdapter {
 					};
 					Support headerSupport = new Support() {
 						@Override
-						protected String resolve(HttpServletRequest request, HttpServletResponse response) {
+						protected String resolve(HttpServletRequest request) {
 							return CommonHelper.getValueFromHeader(request, Constant.KEY_LOCALE);
 						}
 					};
 					Support parameterSupport = new Support() {
 						@Override
-						protected String resolve(HttpServletRequest request, HttpServletResponse response) {
+						protected String resolve(HttpServletRequest request) {
 							return CommonHelper.getValueFromParameter(request, Constant.KEY_LOCALE);
 						}
 					};
 					Support cookieSupport = new Support() {
 						@Override
-						protected String resolve(HttpServletRequest request, HttpServletResponse response) {
+						protected String resolve(HttpServletRequest request) {
 							return CommonHelper.getValueFromCookie(request, Constant.KEY_LOCALE);
 						}
 					};
 					Support defaultSupport = new Support() {
 						@Override
-						protected String resolve(HttpServletRequest request, HttpServletResponse response) {
+						protected String resolve(HttpServletRequest request) {
 							return supportedLocalesHolder.getDefaultLocale();
 						}
 					};
@@ -95,22 +95,22 @@ public class I18NInterceptor extends HandlerInterceptorAdapter {
 	public abstract class Support {
 		private Support next;
 
-		protected abstract String resolve(HttpServletRequest request, HttpServletResponse response);
+		protected abstract String resolve(HttpServletRequest request);
 
 		public Support setNext(Support next) {
 			this.next = next;
 			return next;
 		}
 
-		public final String support(HttpServletRequest request, HttpServletResponse response) {
-			String locale = this.resolve(request, response);
+		public final String support(HttpServletRequest request) {
+			String locale = this.resolve(request);
 			if(locale!=null) {
 				locale = locale.trim();
 				if((locale.length()==0||!supportedLocalesHolder.isValidLocale(locale))&&this.next!=null) {
-					locale = this.next.support(request, response);
+					locale = this.next.support(request);
 				}
 			} else if(this.next!=null) {
-				locale = this.next.support(request, response);
+				locale = this.next.support(request);
 			}
 			return locale;
 		}

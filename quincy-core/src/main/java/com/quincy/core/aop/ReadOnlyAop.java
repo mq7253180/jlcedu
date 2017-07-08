@@ -33,6 +33,7 @@ public class ReadOnlyAop {
 		if(transactionalAnnotation==null) {
 			ConnectionHolder conHolder = null;
 			Connection conn = null;
+			boolean stackRoot = false;
 			try {
 				conHolder = (ConnectionHolder) TransactionSynchronizationManager.getResource(dataSource);
 				if(conHolder==null||conHolder.getConnectionHandle()==null) {
@@ -40,14 +41,17 @@ public class ReadOnlyAop {
 					conn = this.dataSource.getConnection();
 					conHolder = new ConnectionHolder(conn);
 					TransactionSynchronizationManager.bindResource(this.dataSource, conHolder);
+					stackRoot = true;
 				}
 				return joinPoint.proceed();
 			} finally {
-				if(conn!=null)
-					conn.close();
-				if(conHolder!=null)
-					conHolder.clear();
-				TransactionSynchronizationManager.unbindResource(dataSource);
+				if(stackRoot) {
+					if(conn!=null)
+						conn.close();
+					if(conHolder!=null)
+						conHolder.clear();
+					TransactionSynchronizationManager.unbindResource(dataSource);
+				}
 			}
 		} else {
 			return joinPoint.proceed();
