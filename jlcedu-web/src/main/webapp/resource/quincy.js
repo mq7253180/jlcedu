@@ -1,4 +1,10 @@
 (function($) {
+	if(navigator.appName=="Microsoft Internet Explorer") {
+		var regExp = new RegExp("^.+MSIE\\s*[1-9]\\.+.+$", "g");
+		if(regExp.test(navigator.appVersion)) {
+			alert("IE浏览器请使用10及以上版本");
+		}
+	}
 	$.fn.ajaxUploadFiles = function(s) {
 		var path = $(this).val();
 		if(path==null||path.length==0) {
