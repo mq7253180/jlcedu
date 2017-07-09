@@ -33,6 +33,7 @@ public class ResourceDebugModeFilter implements Filter {
 						byte[] buf = new byte[in.available()];
 						in.read(buf);
 						out.write(buf);
+						out.flush();
 					} finally {
 						if(in!=null)
 							in.close();

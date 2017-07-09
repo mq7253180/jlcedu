@@ -25,8 +25,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 public class HttpClientHelper {
 	public static String get(String url, Header[] headers) throws IOException {
-		HttpGet httpGet = new HttpGet(url);
+		HttpGet httpGet = null;
 		try {
+			httpGet = new HttpGet(url);
 			return getString(httpGet, headers);
 		} finally {
 			if(httpGet!=null)
@@ -35,8 +36,9 @@ public class HttpClientHelper {
 	}
 
 	public static String post(String url, List<NameValuePair> nameValuePairList, Header[] headers) throws IOException {
-		HttpPost httpPost = new HttpPost(url);
+		HttpPost httpPost = null;
 		try {
+			httpPost = new HttpPost(url);
 			if(nameValuePairList!=null&&nameValuePairList.size()>0)
 				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairList));
 			return getString(httpPost, headers);
@@ -47,10 +49,11 @@ public class HttpClientHelper {
 	}
 
 	public static void saveAsFile(String url, Header[] headers, String path) throws IOException {
-		HttpGet httpGet = new HttpGet(url);
+		HttpGet httpGet = null;
 		InputStream in = null;
 		OutputStream out = null;
 		try {
+			httpGet = new HttpGet(url);
 			in = new BufferedInputStream(send(httpGet, headers));
 			byte[] buf = new byte[in.available()];
 			in.read(buf);

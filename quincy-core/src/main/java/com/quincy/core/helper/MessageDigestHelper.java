@@ -81,8 +81,6 @@ public class MessageDigestHelper {
 	        MappedByteBuffer byteBuffer = ch.map(FileChannel.MapMode.READ_ONLY, startPosition, file.length()-startPosition);
 	        messageDigest.update(byteBuffer);
 	        return messageDigest.digest();
-		} catch (FileNotFoundException e) {
-			throw e;
 		} finally {
 			if(in!=null) {
 				in.close();

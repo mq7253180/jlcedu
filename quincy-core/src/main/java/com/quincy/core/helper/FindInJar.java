@@ -71,8 +71,6 @@ public class FindInJar {
 	                            this.jarFiles.add(filename);
 	                        }
 	                    }
-					} catch (IOException e) {
-						System.err.println(filename+": "+getStackTrace(e));
 					} finally {
 						if(zip!=null)
 							zip.close();
