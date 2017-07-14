@@ -22,6 +22,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
 
 public class HttpClientHelper {
 	public static String get(String url, Header[] headers) throws IOException {
@@ -40,7 +41,7 @@ public class HttpClientHelper {
 		try {
 			httpPost = new HttpPost(url);
 			if(nameValuePairList!=null&&nameValuePairList.size()>0)
-				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairList));
+				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairList, HTTP.UTF_8));
 			return getString(httpPost, headers);
 		} finally {
 			if(httpPost!=null)
