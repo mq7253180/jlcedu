@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,7 @@ public class IndexController {
 		return "redirect:/"+request.getLocale().toLanguageTag().toLowerCase().replace("-", "_")+"/website/index";
 	}
 
-	@RequestMapping("/test")
+	@RequestMapping(value = "/test", method = RequestMethod.POST)
 	@ResponseBody
 	public String test(HttpServletRequest request) throws IOException {
 		Enumeration<String> names = request.getHeaderNames();
