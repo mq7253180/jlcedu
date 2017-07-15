@@ -30,7 +30,7 @@ public class IndexController {
 		return "redirect:/"+request.getLocale().toLanguageTag().toLowerCase().replace("-", "_")+"/website/index";
 	}
 
-	@RequestMapping(value = "/test", method = RequestMethod.POST)
+	@RequestMapping(value="/test", method = RequestMethod.POST)
 	@ResponseBody
 	public String test(HttpServletRequest request) throws IOException {
 		Enumeration<String> names = request.getHeaderNames();
