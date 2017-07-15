@@ -50,18 +50,18 @@ public class IndexController {
 		content = sb.toString();
 		log.error("Reader-Content: "+content);
 
-		InputStream in = null;
-		try {
-			in = request.getInputStream();
-			in = new BufferedInputStream(in);
-			byte[] buf = new byte[in.available()];
-			in.read(buf);
-			content = new String(buf);
-		} finally {
-			if(in!=null)
-				in.close();
-		}
-		log.error("InputStream-Content: "+content);
+//		InputStream in = null;
+//		try {
+//			in = request.getInputStream();
+//			in = new BufferedInputStream(in);
+//			byte[] buf = new byte[in.available()];
+//			in.read(buf);
+//			content = new String(buf);
+//		} finally {
+//			if(in!=null)
+//				in.close();
+//		}
+//		log.error("InputStream-Content: "+content);
 		log.error("=============");
 		return "ssssssss";
 	}
