@@ -197,6 +197,7 @@
 	<input type="hidden" id="uri" value="<@attr key="uri_without_first" />"/>
 	<input type="hidden" id="resourcePrefix" value="<@property key="prefix.resource"/>"/>
 	<script src="<@property key="prefix.resource"/>/layout/old/jquery-1.9.1.min.js"></script>
+	<script src="<@property key="prefix.resource"/>/quincy.js"></script>
 	<script src="<@property key="prefix.resource"/>/layout/layout.js"></script>
 	<script src="<@property key="prefix.resource"/>/layout/layout_p.js"></script>
 <#list jslist as js>

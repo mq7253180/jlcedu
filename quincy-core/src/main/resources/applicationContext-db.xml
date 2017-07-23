@@ -83,7 +83,7 @@
 		<property name="basenames">
         	<array>
                 <value>classpath:i18n/quincy</value>
-                <value>classpath:i18n/text</value>
+                <value>resource/i18n/quincy</value>
             </array>
         </property>
         <property name="useCodeAsDefaultMessage" value="true" />

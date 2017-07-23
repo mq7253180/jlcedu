@@ -1,12 +1,12 @@
 $(document).ready(function() {
-	$("#switchLanguageSelect").val($("#locale").val());
+	$("#switchLanguageSelect").val(locale);
 	$("#switchLanguageSelect").change(function() {
-		$(location).attr("href", "/"+$(this).children("option:selected").val()+$("#uri").val());
+		$(location).attr("href", "/"+$(this).children("option:selected").val()+uri);
 	});
 	$("#testBtn").click(function() {
 		var data = {"arg":"xxx"};
 		$.ajax({
-			url: "/"+$("#locale").val()+"/website/test",
+			url: "/"+locale+"/website/test",
 			type: "POST",
 			dataType: "JSON",
 			data: data,
@@ -23,7 +23,7 @@ $(document).ready(function() {
 	});
 	$("#testIndexBtn").click(function() {
 		$.ajax({
-			url: "/"+$("#locale").val()+"/index",
+			url: "/"+locale+"/index",
 			type: "POST",
 			dataType: "JSON",
 			complete: function(xhr, status) {

@@ -65,11 +65,11 @@ function hidead_R1() {
     showad = false;
     document.getElementById("RightDiv1").style.display = "none";
 }
-var Url_L = "<a href='NewsList.aspx?ClassID=006007' target='_blank'><img src='"+$("#resourcePrefix").val()+"/layout/old/img/635525949185247500_1.jpg' width='100' height='275' border='0'></a>";
-var Url_R = "<a href='NewsList.aspx?ClassID=009005' target='_blank'><img src='"+$("#resourcePrefix").val()+"/layout/old/img/635525949652747500_2.jpg' width='100' height='275' border='0'></a>";
+var Url_L = "<a href='NewsList.aspx?ClassID=006007' target='_blank'><img src='"+resourcePrefix+"/layout/old/img/635525949185247500_1.jpg' width='100' height='275' border='0'></a>";
+var Url_R = "<a href='NewsList.aspx?ClassID=009005' target='_blank'><img src='"+resourcePrefix+"/layout/old/img/635525949652747500_2.jpg' width='100' height='275' border='0'></a>";
 suspendcode12 = "<DIV id=\"LeftDiv\" style='left:10px;POSITION:absolute;TOP:215px;'><div align='right' style='position: absolute;top:0px;right:0px;margin:2px;padding:2px;z-index:2000;'><a href='javascript:;' onclick='hidead_L()' style='color:red;text-decoration:none;font-size:12px;'>关闭</a></div>" + Url_L + "</div>"
 suspendcode14 = "<DIV id=\"RightDiv\" style='right:10px;POSITION:absolute;TOP:215px;'><div align='right' style='position: absolute;top:0px;right:0px;margin:2px;padding:2px;z-index:2000;'><a href='javascript:;' onclick='hidead_R()' style='color:red;text-decoration:none;font-size:12px;'>关闭</a></div>" + Url_R + "</div>"
-suspendcode15 = "<DIV id=\"RightDiv1\" style='right:10px;POSITION:absolute;TOP:500px;'><div align='right' style='position: absolute;top:0px;right:0px;margin:2px;padding:2px;z-index:2000;'><a href='javascript:;' onclick='hidead_R1()' style='color:red;text-decoration:none;font-size:12px;'>关闭</a></div><a href='http://www.jlyzzjb.com/sy.asp' target='_blank'><img src='"+$("#resourcePrefix").val()+"/layout/old/img/logo200.png' width='150' height='165' border='0'></a></div>";
+suspendcode15 = "<DIV id=\"RightDiv1\" style='right:10px;POSITION:absolute;TOP:500px;'><div align='right' style='position: absolute;top:0px;right:0px;margin:2px;padding:2px;z-index:2000;'><a href='javascript:;' onclick='hidead_R1()' style='color:red;text-decoration:none;font-size:12px;'>关闭</a></div><a href='http://www.jlyzzjb.com/sy.asp' target='_blank'><img src='"+resourcePrefix+"/layout/old/img/logo200.png' width='150' height='165' border='0'></a></div>";
 //实验
 //suspendcode16 = "<DIV id=\"RightDiv0\" style='right:10px;POSITION:absolute;TOP:10px;'><div align='right' style='position: absolute;top:0px;right:0px;margin:2px;padding:2px;z-index:2000;'></div><a href='javascript:;' onclick='logSY();' ><img src='images/2016fenban.png' width='150' height='165' border='0'></a></div>";
 //分班

@@ -1,5 +1,5 @@
-<#assign jslist=["/content/index_m.js", "/jquery.nivo.slider.pack.js"]/>
-<#assign csslist=["/nivo-slider.css", "/default.css"]/>
+<#assign jslist=["/content/index_m.js", "/plugin/nivo/jquery.nivo.slider.pack.js"]/>
+<#assign csslist=["/plugin/nivo/nivo-slider.css", "/plugin/nivo/default.css"]/>
 <#assign titlekey="index.title"/>
 <#include "/layout_m.ftl"/>
 <@layout>
