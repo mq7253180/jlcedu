@@ -20,6 +20,8 @@ public class I18NInterceptor extends HandlerInterceptorAdapter {
 	@Autowired
 	private SupportedLocalesHolder supportedLocalesHolder;
 
+	private final static String RESULT = "result";
+
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		initChain();
@@ -38,6 +40,10 @@ public class I18NInterceptor extends HandlerInterceptorAdapter {
 				viewName = viewName.trim();
 				if(!viewName.startsWith("redirect")&&!viewName.startsWith("forward")) {
 					modelAndView.setViewName(modelAndView.getViewName()+"_"+CommonHelper.clientType(request, handler));
+					/*Object result = modelAndView.getModelMap().get(RESULT);
+					if(result==null) {
+						modelAndView.addObject(RESULT, -1);
+					}*/
 				}
 			}
 		}
@@ -92,7 +98,7 @@ public class I18NInterceptor extends HandlerInterceptorAdapter {
 		}
 	}
 
-	public abstract class Support {
+	private abstract class Support {
 		private Support next;
 
 		protected abstract String resolve(HttpServletRequest request);

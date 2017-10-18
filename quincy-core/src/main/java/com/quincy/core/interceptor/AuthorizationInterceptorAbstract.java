@@ -34,11 +34,12 @@ public abstract class AuthorizationInterceptorAbstract extends HandlerIntercepto
 					HandlerMethod method = (HandlerMethod)handler;
 					annotation = method.getMethod().getDeclaredAnnotation(WithoutAjax.class);
 				}
-				String outputContent = annotation==null?("{\"status\":0, \"msg\":\""+requestContext.getMessage("login.timeout")+"\"}"):"Timeout";
+				String outputContent = annotation==null?("{\"status\":0, \"msg\":\""+requestContext.getMessage("auth.timeout")+"\"}"):"Timeout";
 				//ServletOutputStream out = null;
 				PrintWriter out = null;
 				try {
 					//out = response.getOutputStream();
+					response.setContentType("application/json;charset=utf-8");
 					out = response.getWriter();
 					out.println(outputContent);
 					out.flush();
@@ -48,14 +49,14 @@ public abstract class AuthorizationInterceptorAbstract extends HandlerIntercepto
 					}
 				}
 			} else {
-				String uri = "/sys/login";
-				String backUri = request.getRequestURI();
+//				String uri = "/auth/signin";
+				String uri = "/auth/timeout";
+				String backUri = CommonHelper.trim(request.getRequestURI());
+				if(backUri.indexOf("/index")>=0)
+					backUri = CommonHelper.trim(request.getParameter("back"));
 				if(backUri!=null) {
-					backUri = backUri.trim();
-					if(backUri.length()>1) {
-						uri += "?back=";
-						uri += URLEncoder.encode(backUri, "UTF-8");
-					}
+					uri += "?back=";
+					uri += URLEncoder.encode(backUri, "UTF-8");
 				}
 				String uriLocale = CommonHelper.getFirstAsUri(request);
 				uri = "/"+((uriLocale!=null&&supportedLocalesHolder.isValidLocale(uriLocale))?uriLocale:supportedLocalesHolder.getDefaultLocale())+uri;

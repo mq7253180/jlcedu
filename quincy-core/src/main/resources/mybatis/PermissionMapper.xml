@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oborexport.wms.mapper.PermissionMapper" >
+	<resultMap id="permissionResultMap" type="Permission" >
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="public_key" property="publicKey" jdbcType="VARCHAR" />
+		<result column="private_key" property="privateKey" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="callback_impl_name" property="callbackImplName" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="selectPermission" resultMap="permissionResultMap" parameterType="java.lang.String">
+		SELECT id,public_key,private_key,name,mobile,email FROM t_s_permission WHERE code=#{code, jdbcType=VARCHAR} LIMIT 0,1
+	</select>
+	<select id="selectPermissions" resultMap="permissionResultMap">
+		SELECT id,name,callback_impl_name FROM t_s_permission
+	</select>
+	<update id="updateSecretKeys" parameterType="java.lang.String">
+		UPDATE t_s_permission SET public_key=#{publicKey, jdbcType=VARCHAR},private_key=#{privateKey, jdbcType=VARCHAR} WHERE code=#{code, jdbcType=VARCHAR}
+	</update>
+</mapper>

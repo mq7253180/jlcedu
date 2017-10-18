@@ -42,11 +42,15 @@ public class CacheAop {
     		sb.append(clazz.getName());
     		sb.append(".");
     		sb.append(methodSignature.getName());
+    		Class<?>[] clazzes = method.getParameterTypes();
     		Object[] args = joinPoint.getArgs();
     		if(args!=null&&args.length>0) {
-    			for(Object arg:args) {
+    			for(int i=0;i<args.length;i++) {
+    				Object arg = args[i];
         			sb.append("_");
-        			sb.append(arg==null?"null":arg.toString());
+        			sb.append(clazzes[i].getName());
+        			sb.append("#");
+        			sb.append(arg==null?"null":arg.toString().trim());
         		}
     		}
     		key = sb.toString().getBytes();
@@ -57,10 +61,12 @@ public class CacheAop {
     		byte[] cache = jedis.get(key);
     		if(cache==null||cache.length==0) {
         		Object retVal = joinPoint.proceed();
-        		int expire = annotation.expire();
-        		if(expire>0) {
-            		jedis.set(key, CommonHelper.serialize(retVal));
-            		jedis.expire(key, expire);
+        		if(retVal!=null) {
+        			jedis.set(key, CommonHelper.serialize(retVal));
+            		int expire = annotation.expire();
+            		if(expire>0) {
+                		jedis.expire(key, expire);
+            		}
         		}
         		return retVal;
     		} else {

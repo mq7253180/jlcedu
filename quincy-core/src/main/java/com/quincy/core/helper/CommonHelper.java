@@ -21,6 +21,16 @@ import com.quincy.core.annotation.WithoutAjax;
 public class CommonHelper {
 	private static String[] MOBILE_USER_AGENT_FLAGS = {"iPhone", "iPad", "Android"};
 
+	public static String trim(String s) {
+		if(s!=null) {
+			String _s = s.trim();
+			if(_s.length()>0) {
+				return _s;
+			}
+		}
+		return null;
+	}
+
 	public static HttpServletRequest getRequest() {
 		return ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 	}

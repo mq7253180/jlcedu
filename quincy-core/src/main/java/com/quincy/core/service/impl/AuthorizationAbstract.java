@@ -17,7 +17,7 @@ import com.quincy.core.service.AuthorizationService;
 
 public abstract class AuthorizationAbstract implements AuthorizationService {
 	protected abstract Object getUserObject(HttpServletRequest request) throws Exception;
-	protected abstract void saveVcode(HttpServletRequest request, String vcode);
+	protected abstract void saveVcode(HttpServletRequest request, String vcode) throws Exception;
 
 	public User getUser(HttpServletRequest request) throws Exception {
 		Object obj = this.getUserObject(request);
@@ -30,7 +30,7 @@ public abstract class AuthorizationAbstract implements AuthorizationService {
 	
 	private final static String VCODE_COMBINATION_FROM = "23456789abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ";
 
-	public void vcode(HttpServletRequest request, HttpServletResponse response, int length) throws IOException {
+	public void vcode(HttpServletRequest request, HttpServletResponse response, int length) throws Exception {
 		Random random = new Random();
 		StringBuilder sb = new StringBuilder(length);
 		for(int i=0;i<length;i++) {

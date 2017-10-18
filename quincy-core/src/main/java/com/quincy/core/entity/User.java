@@ -1,5 +1,7 @@
 package com.quincy.core.entity;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,4 +20,5 @@ public class User {
 	private String password;
 	private String loginName;
 	private String nickName;
+	private List<Resource> resources;
 }

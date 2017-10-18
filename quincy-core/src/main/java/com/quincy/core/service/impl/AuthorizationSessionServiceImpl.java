@@ -47,9 +47,23 @@ public class AuthorizationSessionServiceImpl extends AuthorizationAbstract {
 
 	@Override
 	public String getCachedVcode(HttpServletRequest request) {
+		return this.getCachedStr(request, Constant.ATTR_VCODE);
+	}
+
+	@Override
+	public void setDeniedPrivilegeName(HttpServletRequest request, String name) {
+		request.getSession().setAttribute(Constant.ATTR_DENIED_PRIVILEGE, name);
+	}
+
+	@Override
+	public String getDeniedPrivilegeName(HttpServletRequest request) {
+		return this.getCachedStr(request, Constant.ATTR_DENIED_PRIVILEGE);
+	}
+
+	private String getCachedStr(HttpServletRequest request, String attrName) {
 		HttpSession session = request.getSession();
 		if(session!=null) {
-			Object obj = session.getAttribute(Constant.ATTR_VCODE);
+			Object obj = session.getAttribute(attrName);
 			return obj==null?null:obj.toString();
 		}
 		return null;

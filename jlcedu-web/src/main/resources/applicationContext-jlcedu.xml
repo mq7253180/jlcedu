@@ -17,6 +17,13 @@
     </context:component-scan>
 
     <mvc:interceptors>
+    	<!-- 验证码 -->
+    	<mvc:interceptor>
+    		<mvc:mapping path="/**"/>
+			<bean class="com.quincy.core.interceptor.VCodeInterceptor">
+				<property name="authorizationService" ref="${impl.authorization}" />
+			</bean>
+		</mvc:interceptor>
     	<mvc:interceptor>
 			<mvc:mapping path="/*/website/**"/>
 			<bean class="com.jlcedu.interceptor.LoadWebsiteNavigationInterceptor"/>

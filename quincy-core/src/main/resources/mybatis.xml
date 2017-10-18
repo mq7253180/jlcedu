@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="cacheEnabled" value="false"/>
+        <setting name="useGeneratedKeys" value="true"/>
+        <setting name="defaultExecutorType" value="REUSE"/>
+    </settings>
+    <typeAliases>
+    	<package name="com.quincy.core.entity"/>
+        <package name="com.jlcedu.entity"/>
+    </typeAliases>
+    <plugins>
+        <plugin interceptor="com.quincy.core.db.ShardingInterceptor" />
+    </plugins>
+</configuration>

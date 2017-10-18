@@ -31,26 +31,31 @@ public class ReadOnlyAop {
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
 		Transactional transactionalAnnotation = AopHelper.getAnnotation(joinPoint, Transactional.class);
 		if(transactionalAnnotation==null) {
-			ConnectionHolder conHolder = null;
-			Connection conn = null;
+//			ConnectionHolder conHolder = null;
+//			Connection conn = null;
 			boolean stackRoot = false;
 			try {
-				conHolder = (ConnectionHolder) TransactionSynchronizationManager.getResource(dataSource);
-				if(conHolder==null||conHolder.getConnectionHandle()==null) {
-					DataSourceHolder.setSlave();
-					conn = this.dataSource.getConnection();
-					conHolder = new ConnectionHolder(conn);
-					TransactionSynchronizationManager.bindResource(this.dataSource, conHolder);
+//				conHolder = (ConnectionHolder) TransactionSynchronizationManager.getResource(dataSource);
+//				if(conHolder==null||conHolder.getConnectionHandle()==null) {
+//					stackRoot = true;
+//					DataSourceHolder.setSlave();
+//					conn = this.dataSource.getConnection();
+//					conHolder = new ConnectionHolder(conn);
+//					TransactionSynchronizationManager.bindResource(this.dataSource, conHolder);
+//				}
+				if(DataSourceHolder.getDetermineCurrentLookupKey()==null) {
 					stackRoot = true;
+					DataSourceHolder.setSlave();
 				}
 				return joinPoint.proceed();
 			} finally {
 				if(stackRoot) {
-					if(conn!=null)
-						conn.close();
-					if(conHolder!=null)
-						conHolder.clear();
-					TransactionSynchronizationManager.unbindResource(dataSource);
+					DataSourceHolder.remove();
+//					if(conn!=null)
+//						conn.close();
+//					if(conHolder!=null)
+//						conHolder.clear();
+//					TransactionSynchronizationManager.unbindResource(dataSource);
 				}
 			}
 		} else {
