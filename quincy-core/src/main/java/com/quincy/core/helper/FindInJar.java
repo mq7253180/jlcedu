@@ -13,10 +13,10 @@ import java.util.zip.ZipFile;
 
 public class FindInJar {
 	public static void main(String args[]) {
-        FindInJar findInJar = new FindInJar("org.mybatis.spring.transaction.SpringManagedTransaction");
+        FindInJar findInJar = new FindInJar("sun.misc.BASE64Decoder");
         List<String> jarFiles;
 		try {
-			jarFiles = findInJar.findClass("E:/maven/.m2/repository", true);
+			jarFiles = findInJar.findClass("E:/Java/jdk-9.0.1/lib", true);
 			if (jarFiles.size() == 0) {
 	            System.out.println("Not Found");
 	        } else {
