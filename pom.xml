@@ -54,6 +54,7 @@
 		<module>quincy-core</module>
 		<module>quincy-thirdparty</module>
 		<module>jlcedu-service</module>
-		<module>jlcedu-web</module>
+		<module>jlcedu-portal</module>
+		<module>jlcedu-manager</module>
   </modules>
 </project>

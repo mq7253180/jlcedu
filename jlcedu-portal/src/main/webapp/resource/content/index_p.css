@@ -1,0 +1,7 @@
+.slideBox{width:262px; height:262px; overflow:hidden; position:relative;}
+.slideBox .hd{height:15px; overflow:hidden; position:absolute; right:10px; bottom:10px; z-index:1;}
+.slideBox .hd ul{overflow:hidden; zoom:1; float:left;}
+.slideBox .hd ul li{float:left; margin-right:5px;  width:15px; height:15px; line-height:14px; text-align:center; background:#fff; cursor:pointer;}
+.slideBox .hd ul li.on{background:#f00; color:#fff;}
+.slideBox .bd{position:relative; height:100%; z-index:0;}
+.slideBox .bd img{width:262px; height:262px;}

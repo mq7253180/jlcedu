@@ -6,11 +6,11 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>com.jlcedu</groupId>
-	<artifactId>jlcedu-web</artifactId>
+	<artifactId>jlcedu-manager</artifactId>
 	<packaging>war</packaging>
-	<name>jlcedu-web</name>
+	<name>jlcedu-manager</name>
 	<build>
-		<finalName>jlcedu-web</finalName>
+		<finalName>jlcedu-manager</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
