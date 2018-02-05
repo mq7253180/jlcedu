@@ -30,14 +30,13 @@ public class BIOServerLauncher {
 	public static void launchHttp(int port, int threads) throws Exception {
 		launch(port, threads, BIOServerHttpImpl.class);
 	}
-	
+
 	public static void launchNetty(int port, int threads) throws Exception {
 		launch(port, threads, BIOServerNettyImpl.class);
 	}
 
 	public static void main(String[] args) {
 		try {
-//			BIOServerLauncher.launchDefault(8080, 5);
 			BIOServerLauncher.launchHttp(8443, 5);
 //			BIOServerLauncher.stop(8080);
 		} catch (Exception e) {
