@@ -18,6 +18,9 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
+import java.util.Base64.Decoder;
+import java.util.Base64.Encoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,9 +28,6 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 public class RSASecurityHelper {
 	private static final String PUBLIC_KEY = "RSAPublicKey";
@@ -51,7 +51,7 @@ public class RSASecurityHelper {
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
         RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
         //公私钥对象存入map中
-        BASE64Encoder base64Encoder = new BASE64Encoder();
+        Encoder base64Encoder = Base64.getEncoder();
         Map<String, Object> keyMap = new HashMap<String, Object>(8);
         keyMap.put(PUBLIC_KEY, publicKey);
         keyMap.put(PRIVATE_KEY, privateKey);
@@ -61,16 +61,16 @@ public class RSASecurityHelper {
     }
 
 	public static RSAPublicKey loadPublicKeyByStr(String publicKeyStr) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
-		BASE64Decoder base64Decoder = new BASE64Decoder();
-		byte[] buffer = base64Decoder.decodeBuffer(publicKeyStr);
+		Decoder base64Decoder = Base64.getDecoder();
+		byte[] buffer = base64Decoder.decode(publicKeyStr);
 		KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
 		X509EncodedKeySpec keySpec = new X509EncodedKeySpec(buffer);
 		return (RSAPublicKey) keyFactory.generatePublic(keySpec);
 	}
 
 	public static RSAPrivateKey loadPrivateKeyByStr(String privateKeyStr) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
-		BASE64Decoder base64Decoder = new BASE64Decoder();
-		byte[] buffer = base64Decoder.decodeBuffer(privateKeyStr);
+		Decoder base64Decoder = Base64.getDecoder();
+		byte[] buffer = base64Decoder.decode(privateKeyStr);
 		PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(buffer);
 		KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
 		return (RSAPrivateKey) keyFactory.generatePrivate(keySpec);
@@ -121,27 +121,27 @@ public class RSASecurityHelper {
 	}
 
 	public static String sign(String privateKey, String encode, String content) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException, IOException {
-		BASE64Decoder base64Decoder = new BASE64Decoder();
-		BASE64Encoder base64Encoder = new BASE64Encoder();
-		PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(base64Decoder.decodeBuffer(privateKey));
+		Decoder base64Decoder = Base64.getDecoder();
+		Encoder base64Encoder = Base64.getEncoder();
+		PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(base64Decoder.decode(privateKey));
 		KeyFactory keyf = KeyFactory.getInstance(KEY_ALGORITHM);
 		PrivateKey priKey = keyf.generatePrivate(priPKCS8);
 		Signature signature = Signature.getInstance(SIGNATURE_ALGORITHMS);
 		signature.initSign(priKey);
 		signature.update(content.getBytes(encode==null||encode.trim().length()==0?"UTF-8":encode.trim()));
 		byte[] signed = signature.sign();
-		return base64Encoder.encode(signed);
+		return new String(base64Encoder.encode(signed));
 	}
 
 	public static boolean verify(String publicKey, String signatureStr, String content, String encode) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException, IOException {
-		BASE64Decoder base64Decoder = new BASE64Decoder();
+		Decoder base64Decoder = Base64.getDecoder();
 		KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-		byte[] encodedKey = base64Decoder.decodeBuffer(publicKey);
+		byte[] encodedKey = base64Decoder.decode(publicKey);
 		PublicKey pubKey = keyFactory.generatePublic(new X509EncodedKeySpec(encodedKey));
 		Signature signature = Signature.getInstance(SIGNATURE_ALGORITHMS);
 		signature.initVerify(pubKey);
 		signature.update(content.getBytes(encode==null||encode.trim().length()==0?"UTF-8":encode.trim()));
-		boolean bverify = signature.verify(base64Decoder.decodeBuffer(signatureStr));
+		boolean bverify = signature.verify(base64Decoder.decode(signatureStr));
 		return bverify;
 	}
 
