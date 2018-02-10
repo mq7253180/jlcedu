@@ -37,7 +37,7 @@
 			<id>pro</id>
 			<properties>
 				<prefix.resource>http://resource.maqiangcgq.com</prefix.resource>
-				<log4j.path>/servers/logs/code/jlcedu.log</log4j.path>
+				<log4j.path>/logs/web/jlcedu-portal.log</log4j.path>
 				<log4j.level>WARN</log4j.level>
 				<jdbc.master.url>jdbc:mysql://localhost:3306/jlcedu?zeroDateTimeBehavior=convertToNull</jdbc.master.url>
 				<jdbc.master.username>jlcedu</jdbc.master.username>
