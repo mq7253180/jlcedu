@@ -35,7 +35,7 @@
 				<version>2.4</version>
 				<configuration>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
-					<packagingExcludes>resource/**</packagingExcludes>
+					<packagingExcludes>resource/content/**,resource/layout/**,resource/plugin/**,resource/upload/**,resource/*</packagingExcludes>
 					<!-- webXml>src/main/webapp/WEB-INF/web.xml</webXml>
 					<webResources>
 						<resource>
