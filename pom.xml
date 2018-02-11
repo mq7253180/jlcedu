@@ -24,6 +24,9 @@
 				<jdbc.slave.url>jdbc:mysql://localhost:3308/jlcedu?zeroDateTimeBehavior=convertToNull</jdbc.slave.url>
 				<jdbc.slave.username>jlcedu</jdbc.slave.username>
 				<jdbc.slave.password>xxx</jdbc.slave.password>
+				<redis.host>127.0.0.1</redis.host>
+				<redis.port>6379</redis.port>
+				<redis.pwd>www</redis.pwd>
 				<domain>localhost</domain>
 				<wechat.CorpID>wx5823bf96d3bd56c7</wechat.CorpID>
 				<wechat.token>QDG6eK</wechat.token>
@@ -45,6 +48,9 @@
 				<jdbc.slave.url>jdbc:mysql://localhost:3306/jlcedu?zeroDateTimeBehavior=convertToNull</jdbc.slave.url>
 				<jdbc.slave.username>jlcedu</jdbc.slave.username>
 				<jdbc.slave.password>xxx</jdbc.slave.password>
+				<redis.host>127.0.0.1</redis.host>
+				<redis.port>6379</redis.port>
+				<redis.pwd>www</redis.pwd>
 				<domain>jlcedu.maqiangcgq.com</domain>
 				<wechat.CorpID>wxd861e20edfcdb923</wechat.CorpID>
 				<wechat.token>69gh1OrHdwjSeygBoj7oHGUnseXxcv</wechat.token>
