@@ -21,4 +21,4 @@ $(function () {
     	autoPlay:true
     });
 })
-alert(resourcePrefix+"---"+$.i18n.prop("jlcedu.no1.top.alumni"));
+//alert(resourcePrefix+"---"+$.i18n.prop("jlcedu.no1.top.alumni"));
