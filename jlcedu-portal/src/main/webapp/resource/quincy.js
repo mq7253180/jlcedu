@@ -16,7 +16,7 @@ var uri = $("#uri").val();
 		}
 	}
 	$.i18n.properties({ 
-		name: "obor",
+		name: "quincy",
 		path: resourcePrefix+"/i18n",
 		mode: "map",//模式：变量或 Map
 		language: locale,
