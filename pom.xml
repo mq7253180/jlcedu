@@ -41,7 +41,7 @@
 			<properties>
 				<prefix.resource>http://resource.jlcedu.maqiangcgq.com</prefix.resource>
 				<log4j.path>/logs/web/jlcedu-portal.log</log4j.path>
-				<log4j.level>WARN</log4j.level>
+				<log4j.level>ERROR</log4j.level>
 				<jdbc.master.url>jdbc:mysql://localhost:3306/jlcedu?zeroDateTimeBehavior=convertToNull</jdbc.master.url>
 				<jdbc.master.username>jlcedu</jdbc.master.username>
 				<jdbc.master.password>xxx</jdbc.master.password>
