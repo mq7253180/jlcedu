@@ -1,11 +1,11 @@
 package com.quincy.core.test;
 
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadFactory;
@@ -16,7 +16,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class MultipleThreads {
 	public static void main(String[] args) {
-		BlockingQueue<Runnable> blockingQueue = new ArrayBlockingQueue<Runnable>(3);
+		BlockingQueue<Runnable> blockingQueue = new LinkedBlockingQueue<Runnable>(3);
 		ExecutorService threadPoolExecutor = new ThreadPoolExecutor(2, 4, 3, 
 				TimeUnit.SECONDS, blockingQueue, 
 				new ThreadPoolExecutor.CallerRunsPolicy());
@@ -177,8 +177,10 @@ public class MultipleThreads {
 		//
 		ExecutorService singleThreadScheduledExecutor = Executors.newSingleThreadScheduledExecutor(threadFactory);
 		//
+		BlockingQueue<Runnable> blockingQueue = new LinkedBlockingQueue<Runnable>(3);
 		ExecutorService threadPoolExecutor = new ThreadPoolExecutor(2, 4, 3, 
-				TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(3), 
+				TimeUnit.SECONDS, blockingQueue, 
+				threadFactory, 
 				new ThreadPoolExecutor.DiscardOldestPolicy());
 
 		ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(corePoolSize, threadFactory);
