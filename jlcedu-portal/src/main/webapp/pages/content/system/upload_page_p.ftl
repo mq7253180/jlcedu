@@ -16,7 +16,7 @@
 	<script type="text/javascript" src="<@property key="prefix.resource"/>/content/upload.js"></script>
 	<script type="text/javascript">
 		$("#test").click(function() {
-			$("#file1").ajaxUploadFiles({
+			$("#file1").ajaxUploadOneFile({
 				url: "/<@attr key="locale" />/system/upload/do",
 				maxSize: 8000,
 				acceptFileTypes: ["xlsx"],
