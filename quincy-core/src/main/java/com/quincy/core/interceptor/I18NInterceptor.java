@@ -20,7 +20,7 @@ public class I18NInterceptor extends HandlerInterceptorAdapter {
 	@Autowired
 	private SupportedLocalesHolder supportedLocalesHolder;
 
-	private final static String RESULT = "result";
+//	private final static String RESULT = "result";
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

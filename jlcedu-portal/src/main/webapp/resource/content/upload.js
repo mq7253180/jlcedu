@@ -23,7 +23,7 @@
 			return -2;
 		}
 		var formData = new FormData();
-		formData.append(s.id, files0);
+		formData.append("file0", files0);
 		var req = window.XMLHttpRequest?new XMLHttpRequest():new ActiveXObject("Microsoft.XMLHTTP");
 		req.onreadystatechange = function() {
 			if(req.readyState==4) {
