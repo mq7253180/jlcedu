@@ -19,7 +19,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.quincy.core.annotation.AppSignatureRequired;
 import com.quincy.core.helper.CommonHelper;
-import com.quincy.core.helper.DigestHelper;
+import com.quincy.core.helper.MessageDigestHelper;
 import com.quincy.core.helper.RSASecurityHelper;
 
 import lombok.AllArgsConstructor;
@@ -106,7 +106,7 @@ public class AppSignatureValidationInterceptor extends HandlerInterceptorAdapter
 		String dataStr = data.substring(1, data.length());
 		try {
 			for(String encoding:ENCODINGS) {
-				signatureValidationSuccess = RSASecurityHelper.verify(trustedPublicKey, signature, DigestHelper.getStringMD5(dataStr.getBytes(encoding)), null);
+				signatureValidationSuccess = RSASecurityHelper.verify(trustedPublicKey, signature, MessageDigestHelper.getStringMD5(dataStr.getBytes(encoding)), null);
 				if(signatureValidationSuccess)
 					break;
 			}

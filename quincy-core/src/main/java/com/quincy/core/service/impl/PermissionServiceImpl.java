@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.quincy.core.annotation.ReadOnly;
 import com.quincy.core.entity.Permission;
-import com.quincy.core.helper.DigestHelper;
+import com.quincy.core.helper.MessageDigestHelper;
 import com.quincy.core.helper.RSASecurityHelper;
 import com.quincy.core.mapper.PermissionMapper;
 import com.quincy.core.service.PermissionService;
@@ -43,7 +43,7 @@ public class PermissionServiceImpl implements PermissionService {
 		String publicKey = keyPair[0];
 		String privateKey = keyPair[1];
 		String uuid = UUID.randomUUID().toString();
-		String hash = DigestHelper.getStringSHA1(uuid.getBytes());
+		String hash = MessageDigestHelper.getStringSHA1(uuid.getBytes());
 		permission.setCode(codePrefix+hash);
 		permission.setPublicKey(publicKey);
 		permission.setPrivateKey(privateKey);

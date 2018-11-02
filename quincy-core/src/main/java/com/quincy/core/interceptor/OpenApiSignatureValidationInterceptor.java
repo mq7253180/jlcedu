@@ -22,7 +22,7 @@ import com.quincy.core.Constant;
 import com.quincy.core.annotation.OpenApiSignatureRequired;
 import com.quincy.core.entity.Permission;
 import com.quincy.core.helper.CommonHelper;
-import com.quincy.core.helper.DigestHelper;
+import com.quincy.core.helper.MessageDigestHelper;
 import com.quincy.core.helper.RSASecurityHelper;
 import com.quincy.core.service.PermissionService;
 
@@ -128,7 +128,7 @@ public class OpenApiSignatureValidationInterceptor extends HandlerInterceptorAda
 		boolean signatureValidationSuccess = false;
 		try {
 			for(String encoding:ENCODINGS) {
-				signatureValidationSuccess = RSASecurityHelper.verify(publicKey, signature, DigestHelper.getStringMD5(data.getBytes(encoding)), null);
+				signatureValidationSuccess = RSASecurityHelper.verify(publicKey, signature, MessageDigestHelper.getStringMD5(data.getBytes(encoding)), null);
 				if(signatureValidationSuccess)
 					break;
 			}
