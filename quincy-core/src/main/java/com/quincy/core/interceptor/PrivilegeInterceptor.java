@@ -12,15 +12,12 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.support.RequestContext;
 
 import com.quincy.core.Constants;
-import com.quincy.core.common.SupportedLocalesHolder;
 import com.quincy.core.entity.Resource;
 import com.quincy.core.entity.User;
 import com.quincy.core.helper.CommonHelper;
 import com.quincy.core.service.AuthorizationService;
 
 public class PrivilegeInterceptor extends HandlerInterceptorAdapter {
-	@Autowired
-	private SupportedLocalesHolder supportedLocalesHolder;
 	private AuthorizationService authorizationService;
 	private Map<String, String> resourceMap;
 
@@ -57,7 +54,7 @@ public class PrivilegeInterceptor extends HandlerInterceptorAdapter {
 			authorizationService.setDeniedPrivilegeName(request, resourceMap.get(uri));
 			uri = "/auth/deny";
 			String uriLocale = CommonHelper.getFirstAsUri(request);
-			uri = "/"+((uriLocale!=null&&supportedLocalesHolder.isValidLocale(uriLocale))?uriLocale:supportedLocalesHolder.getDefaultLocale())+uri;
+			uri = "/"+(uriLocale!=null?uriLocale:CommonHelper.getDefaultLocale(request))+uri;
 			response.sendRedirect(uri);
 		}
 		return false;

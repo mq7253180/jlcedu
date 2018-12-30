@@ -49,8 +49,7 @@ public class CommonHelper {
 		I18NSupport defaultSupport = new I18NSupport() {
 			@Override
 			protected String resolve(HttpServletRequest request) {
-				Locale locale = request.getLocale();
-				return locale.getLanguage()+"_"+locale.getCountry();
+				return getDefaultLocale(request);
 			}
 		};
 		headerSupport.setNext(headerSupport).setNext(parameterSupport).setNext(cookieSupport).setNext(defaultSupport);
@@ -79,6 +78,11 @@ public class CommonHelper {
 			}
 			return locale;
 		}
+	}
+
+	public static String getDefaultLocale(HttpServletRequest request) {
+		Locale locale = request.getLocale();
+		return locale.getLanguage()+"_"+locale.getCountry();
 	}
 
 	public static String trim(String s) {

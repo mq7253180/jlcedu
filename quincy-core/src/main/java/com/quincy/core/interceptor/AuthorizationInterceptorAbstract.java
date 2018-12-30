@@ -6,21 +6,17 @@ import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.support.RequestContext;
 
 import com.quincy.core.Constants;
 import com.quincy.core.annotation.WithoutAjax;
-import com.quincy.core.common.SupportedLocalesHolder;
 import com.quincy.core.entity.User;
 import com.quincy.core.helper.CommonHelper;
 import com.quincy.core.service.AuthorizationService;
 
 public abstract class AuthorizationInterceptorAbstract extends HandlerInterceptorAdapter {
-	@Autowired
-	private SupportedLocalesHolder supportedLocalesHolder;
 	private AuthorizationService authorizationService;
 
 	protected boolean doAuth(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -59,7 +55,7 @@ public abstract class AuthorizationInterceptorAbstract extends HandlerIntercepto
 					uri += URLEncoder.encode(backUri, "UTF-8");
 				}
 				String uriLocale = CommonHelper.getFirstAsUri(request);
-				uri = "/"+((uriLocale!=null&&supportedLocalesHolder.isValidLocale(uriLocale))?uriLocale:supportedLocalesHolder.getDefaultLocale())+uri;
+				uri = "/"+(uriLocale!=null?uriLocale:CommonHelper.getDefaultLocale(request))+uri;
 				response.sendRedirect(uri);
 			}
 			return false;
