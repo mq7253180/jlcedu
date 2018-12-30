@@ -12,8 +12,6 @@ import org.xml.sax.InputSource;
 
 import com.quincy.thirdparty.wechat.WXBizMsgCrypt;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-
 public class WechatSample {
 
 	public static void main(String[] args) throws Exception {
@@ -124,18 +122,15 @@ public class WechatSample {
 		以上2，3，4步可以用公众平台提供的库函数EncryptMsg来实现。
 		*/
 		String sRespData = "<xml><ToUserName><![CDATA[mycreate]]></ToUserName><FromUserName><![CDATA[wx5823bf96d3bd56c7]]></FromUserName><CreateTime>1348831860</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[this is a test]]></Content><MsgId>1234567890123456</MsgId><AgentID>128</AgentID></xml>";
-		try{
+		try {
 			String sEncryptMsg = wxcpt.EncryptMsg(sRespData, sReqTimeStamp, sReqNonce);
 			System.out.println("after encrypt sEncrytMsg: " + sEncryptMsg);
 			// 加密成功
 			// TODO:
 			// HttpUtils.SetResponse(sEncryptMsg);
-		}
-		catch(Exception e)
-		{
+		} catch(Exception e) {
 			e.printStackTrace();
 			// 加密失败
 		}
-
 	}
 }
