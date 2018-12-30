@@ -11,7 +11,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.support.RequestContext;
 
-import com.quincy.core.Constant;
+import com.quincy.core.Constants;
 import com.quincy.core.annotation.WithoutAjax;
 import com.quincy.core.common.SupportedLocalesHolder;
 import com.quincy.core.entity.User;
@@ -27,7 +27,7 @@ public abstract class AuthorizationInterceptorAbstract extends HandlerIntercepto
 		User user = (User)authorizationService.getUser(request);
 		if(user==null) {
 			String clientType = CommonHelper.clientType(request, handler);
-			if(Constant.CLIENT_TYPE_J.equals(clientType)) {
+			if(Constants.CLIENT_TYPE_J.equals(clientType)) {
 				RequestContext requestContext = new RequestContext(request);
 				WithoutAjax annotation = null;
 				if(handler!=null) {
@@ -64,7 +64,7 @@ public abstract class AuthorizationInterceptorAbstract extends HandlerIntercepto
 			}
 			return false;
 		} else {
-			request.setAttribute(Constant.ATTR_USER, user);
+			request.setAttribute(Constants.ATTR_USER, user);
 			return true;
 		}
 	}

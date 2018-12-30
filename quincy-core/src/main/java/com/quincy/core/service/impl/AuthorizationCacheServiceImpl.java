@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.quincy.core.Constant;
+import com.quincy.core.Constants;
 import com.quincy.core.entity.User;
 import com.quincy.core.helper.CommonHelper;
 
@@ -32,7 +32,7 @@ public class AuthorizationCacheServiceImpl extends AuthorizationAbstract {
 		return new Decoration() {
 			@Override
 			protected Object run(Jedis jedis, String token) throws Exception {
-				byte[] key = (Constant.CLIENT_TOKEN+".USER."+token).getBytes();
+				byte[] key = (Constants.CLIENT_TOKEN+".USER."+token).getBytes();
 				byte[] b = jedis.get(key);
 				if(b!=null&&b.length>0) {
 					int seconds = expire*60;
@@ -47,7 +47,7 @@ public class AuthorizationCacheServiceImpl extends AuthorizationAbstract {
 	@Override
 	public String setUser(HttpServletRequest request, User user) throws IOException {
 		String token = this.createOrGetToken(request);
-		byte[] key = (Constant.CLIENT_TOKEN+".USER."+token).getBytes();
+		byte[] key = (Constants.CLIENT_TOKEN+".USER."+token).getBytes();
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();
@@ -69,7 +69,7 @@ public class AuthorizationCacheServiceImpl extends AuthorizationAbstract {
 		new Decoration() {
 			@Override
 			protected Object run(Jedis jedis, String token) throws Exception {
-				jedis.del((Constant.CLIENT_TOKEN+".USER."+token).getBytes());
+				jedis.del((Constants.CLIENT_TOKEN+".USER."+token).getBytes());
 				return null;
 			}
 		}.start(request);
@@ -87,7 +87,7 @@ public class AuthorizationCacheServiceImpl extends AuthorizationAbstract {
 		protected abstract Object run(Jedis jedis, String token) throws Exception;
 
 		public Object start(HttpServletRequest request) throws Exception {
-			String token = CommonHelper.getValue(request, Constant.CLIENT_TOKEN);
+			String token = CommonHelper.getValue(request, Constants.CLIENT_TOKEN);
 			if(token!=null) {
 				token = token.trim();
 				if(token.length()>0) {
@@ -106,13 +106,13 @@ public class AuthorizationCacheServiceImpl extends AuthorizationAbstract {
 	}
 
 	private String createOrGetToken(HttpServletRequest request) {
-		String token = CommonHelper.getValue(request, Constant.CLIENT_TOKEN);
+		String token = CommonHelper.getValue(request, Constants.CLIENT_TOKEN);
 		if(token!=null) {
 			token = token.trim();
 		} else {
 			token = UUID.randomUUID().toString().replaceAll("-", "");
-			if(!Constant.CLIENT_TYPE_J.equals(CommonHelper.clientType(request))) {//如果是浏览器写cookie
-				Cookie cookie = new Cookie(Constant.CLIENT_TOKEN, token);
+			if(!Constants.CLIENT_TYPE_J.equals(CommonHelper.clientType(request))) {//如果是浏览器写cookie
+				Cookie cookie = new Cookie(Constants.CLIENT_TOKEN, token);
 				cookie.setDomain(domain);
 				cookie.setPath("/");
 				cookie.setMaxAge(Integer.MAX_VALUE);
@@ -135,7 +135,7 @@ public class AuthorizationCacheServiceImpl extends AuthorizationAbstract {
 
 	private void setCachedStr(HttpServletRequest request, String flag, String content) {
 		String token = this.createOrGetToken(request);
-		String key = Constant.CLIENT_TOKEN+"."+flag+"."+token;
+		String key = Constants.CLIENT_TOKEN+"."+flag+"."+token;
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();
@@ -152,7 +152,7 @@ public class AuthorizationCacheServiceImpl extends AuthorizationAbstract {
 		Object retVal = new Decoration() {
 			@Override
 			protected Object run(Jedis jedis, String token) throws Exception {
-				String key = Constant.CLIENT_TOKEN+"."+flag+"."+token;
+				String key = Constants.CLIENT_TOKEN+"."+flag+"."+token;
 				String vcode = jedis.get(key);
 				return vcode;
 			}

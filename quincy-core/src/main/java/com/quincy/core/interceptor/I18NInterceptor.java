@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import com.quincy.core.Constant;
+import com.quincy.core.Constants;
 import com.quincy.core.common.SupportedLocalesHolder;
 import com.quincy.core.helper.CommonHelper;
 
@@ -70,19 +70,19 @@ public class I18NInterceptor extends HandlerInterceptorAdapter {
 					Support headerSupport = new Support() {
 						@Override
 						protected String resolve(HttpServletRequest request) {
-							return CommonHelper.getValueFromHeader(request, Constant.KEY_LOCALE);
+							return CommonHelper.getValueFromHeader(request, Constants.KEY_LOCALE);
 						}
 					};
 					Support parameterSupport = new Support() {
 						@Override
 						protected String resolve(HttpServletRequest request) {
-							return CommonHelper.getValueFromParameter(request, Constant.KEY_LOCALE);
+							return CommonHelper.getValueFromParameter(request, Constants.KEY_LOCALE);
 						}
 					};
 					Support cookieSupport = new Support() {
 						@Override
 						protected String resolve(HttpServletRequest request) {
-							return CommonHelper.getValueFromCookie(request, Constant.KEY_LOCALE);
+							return CommonHelper.getValueFromCookie(request, Constants.KEY_LOCALE);
 						}
 					};
 					Support defaultSupport = new Support() {

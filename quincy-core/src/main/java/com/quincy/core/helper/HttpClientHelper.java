@@ -21,6 +21,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
 
@@ -36,12 +37,19 @@ public class HttpClientHelper {
 		}
 	}
 
-	public static String post(String url, List<NameValuePair> nameValuePairList, Header[] headers) throws IOException {
+	public static String post(String url, Header[] headers, List<NameValuePair> nameValuePairList) throws IOException {
+		return post(url, headers, new UrlEncodedFormEntity(nameValuePairList, HTTP.UTF_8));
+	}
+
+	public static String post(String url, Header[] headers, String body) throws IOException {
+		return post(url, headers, new StringEntity(body));
+	}
+
+	private static String post(String url, Header[] headers, HttpEntity entity) throws IOException {
 		HttpPost httpPost = null;
 		try {
 			httpPost = new HttpPost(url);
-			if(nameValuePairList!=null&&nameValuePairList.size()>0)
-				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairList, HTTP.UTF_8));
+			httpPost.setEntity(entity);
 			return getString(httpPost, headers);
 		} finally {
 			if(httpPost!=null)
@@ -114,5 +122,4 @@ public class HttpClientHelper {
 //		System.out.println(HttpClientHelper.post("http://localhost:8080/test", null, headers));
 		HttpClientHelper.saveAsFile("http://mmbiz.qpic.cn/mmbiz/wc7YNPm3YxU84aB22zTIBXGUDcGwYIJruDrwgwFzdK5BuS86Iic1Zzeb7tgP4BfjEHpcq7GCzPT0aBXeThm63rw/0?", null, "H:/aaa.gif");
 	}
-
 }

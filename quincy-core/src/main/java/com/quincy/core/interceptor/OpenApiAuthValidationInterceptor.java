@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.quincy.core.Constant;
+import com.quincy.core.Constants;
 import com.quincy.core.annotation.OpenApiAuthRequired;
 import com.quincy.core.entity.Permission;
 import com.quincy.core.helper.CommonHelper;
@@ -34,7 +34,7 @@ public class OpenApiAuthValidationInterceptor extends HandlerInterceptorAdapter 
 		if(annotation!=null) {
 			Error error = this.validate(request);
 			if(error!=null) {
-				if(Constant.CLIENT_TYPE_J.equals(CommonHelper.clientType(request))) {
+				if(Constants.CLIENT_TYPE_J.equals(CommonHelper.clientType(request))) {
 					new OutputOperation() {
 						@Override
 						protected void run(PrintWriter out) throws IOException {

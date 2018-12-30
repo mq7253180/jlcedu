@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Locale;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -15,11 +16,70 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.method.HandlerMethod;
 
-import com.quincy.core.Constant;
+import com.quincy.core.Constants;
 import com.quincy.core.annotation.WithoutAjax;
 
 public class CommonHelper {
+	private static I18NSupport i18nChainHead;
 	private static String[] MOBILE_USER_AGENT_FLAGS = {"iPhone", "iPad", "Android"};
+
+	public static String getLocale(HttpServletRequest request) {
+		return i18nChainHead.support(request);
+	}
+
+	static {
+		I18NSupport headerSupport = new I18NSupport() {
+			@Override
+			protected String resolve(HttpServletRequest request) {
+				return CommonHelper.getValueFromHeader(request, Constants.KEY_LOCALE);
+			}
+		};
+		I18NSupport cookieSupport = new I18NSupport() {
+			@Override
+			protected String resolve(HttpServletRequest request) {
+				return CommonHelper.getValueFromCookie(request, Constants.KEY_LOCALE);
+			}
+		};
+		I18NSupport parameterSupport = new I18NSupport() {
+			@Override
+			protected String resolve(HttpServletRequest request) {
+				return CommonHelper.getValueFromParameter(request, Constants.KEY_LOCALE);
+			}
+		};
+		I18NSupport defaultSupport = new I18NSupport() {
+			@Override
+			protected String resolve(HttpServletRequest request) {
+				Locale locale = request.getLocale();
+				return locale.getLanguage()+"_"+locale.getCountry();
+			}
+		};
+		headerSupport.setNext(headerSupport).setNext(parameterSupport).setNext(cookieSupport).setNext(defaultSupport);
+		i18nChainHead = headerSupport;
+	}
+
+	public static abstract class I18NSupport {
+		private I18NSupport next;
+
+		protected abstract String resolve(HttpServletRequest request);
+
+		public I18NSupport setNext(I18NSupport next) {
+			this.next = next;
+			return next;
+		}
+
+		public final String support(HttpServletRequest request) {
+			String locale = this.resolve(request);
+			if(locale!=null) {
+				locale = locale.trim();
+				if(locale.length()==0&&this.next!=null) {
+					locale = this.next.support(request);
+				}
+			} else if(this.next!=null) {
+				locale = this.next.support(request);
+			}
+			return locale;
+		}
+	}
 
 	public static String trim(String s) {
 		if(s!=null) {
@@ -58,17 +118,17 @@ public class CommonHelper {
 			annotation = method.getMethod().getDeclaredAnnotation(ResponseBody.class);
 		}
 		if("XMLHttpRequest".equals(request.getHeader("x-requested-with"))||isApp(request)||annotation!=null) {
-			return Constant.CLIENT_TYPE_J;
+			return Constants.CLIENT_TYPE_J;
 		} else {
 			String userAgent = request.getHeader("user-agent");
 			if(userAgent!=null) {
 				for(String flag:MOBILE_USER_AGENT_FLAGS) {
 					if(userAgent.contains(flag)) {
-						return Constant.CLIENT_TYPE_M;
+						return Constants.CLIENT_TYPE_M;
 					}
 				}
 			}
-			return Constant.CLIENT_TYPE_P;
+			return Constants.CLIENT_TYPE_P;
 		}
 	}
 
@@ -81,17 +141,17 @@ public class CommonHelper {
 			withoutAnnotation = method.getMethod().getDeclaredAnnotation(WithoutAjax.class);
 		}
 		if((withoutAnnotation!=null?false:"XMLHttpRequest".equals(request.getHeader("x-requested-with")))||isApp(request)||annotation!=null) {
-			return Constant.CLIENT_TYPE_J;
+			return Constants.CLIENT_TYPE_J;
 		} else {
 			String userAgent = request.getHeader("user-agent");
 			if(userAgent!=null) {
 				for(String flag:MOBILE_USER_AGENT_FLAGS) {
 					if(userAgent.contains(flag)) {
-						return Constant.CLIENT_TYPE_M;
+						return Constants.CLIENT_TYPE_M;
 					}
 				}
 			}
-			return Constant.CLIENT_TYPE_P;
+			return Constants.CLIENT_TYPE_P;
 		}
 	}
 
@@ -156,7 +216,7 @@ public class CommonHelper {
 	}
 
 	public static String getApp(HttpServletRequest request) {
-		return getValue(request, Constant.CLIENT_APP);
+		return getValue(request, Constants.CLIENT_APP);
 	}
 
 	public static boolean isApp(HttpServletRequest request) {

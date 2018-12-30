@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.support.RequestContext;
 
-import com.quincy.core.Constant;
+import com.quincy.core.Constants;
 import com.quincy.core.common.SupportedLocalesHolder;
 import com.quincy.core.entity.Resource;
 import com.quincy.core.entity.User;
@@ -39,7 +39,7 @@ public class PrivilegeInterceptor extends HandlerInterceptorAdapter {
 			}*/
 		}
 		String clientType = CommonHelper.clientType(request, handler);
-		if(Constant.CLIENT_TYPE_J.equals(clientType)) {
+		if(Constants.CLIENT_TYPE_J.equals(clientType)) {
 			RequestContext requestContext = new RequestContext(request);
 			String outputContent = "{\"status\":-1, \"msg\":\"["+resourceMap.get(uri)+"]"+requestContext.getMessage("error.deny")+"\"}";
 			PrintWriter out = null;

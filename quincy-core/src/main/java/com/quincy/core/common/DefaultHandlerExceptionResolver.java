@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.quincy.core.Constant;
+import com.quincy.core.Constants;
 import com.quincy.core.helper.CommonHelper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +42,7 @@ public class DefaultHandlerExceptionResolver implements HandlerExceptionResolver
 			s = url.toString();
 		log.error("RESOLVED_DETAIL: "+s, e);
 		String clientType = CommonHelper.clientType(request, handler);
-		String exception = Constant.CLIENT_TYPE_J.equals(clientType)?e.toString():this.getExceptionStackTrace(e, "<br/>", "&nbsp;");
+		String exception = Constants.CLIENT_TYPE_J.equals(clientType)?e.toString():this.getExceptionStackTrace(e, "<br/>", "&nbsp;");
 		ModelAndView mv = new ModelAndView(path+"_"+clientType);
 		mv.addObject("exception", exception);
 		return mv;

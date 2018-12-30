@@ -5,7 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 
-import com.quincy.core.Constant;
+import com.quincy.core.Constants;
 import com.quincy.core.entity.User;
 import com.quincy.core.helper.CommonHelper;
 
@@ -14,12 +14,12 @@ public class AuthorizationSessionServiceImpl extends AuthorizationAbstract {
 	@Override
 	protected Object getUserObject(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
-		return session==null?null:session.getAttribute(Constant.ATTR_USER);
+		return session==null?null:session.getAttribute(Constants.ATTR_USER);
 	}
 
 	@Override
 	public String setUser(HttpServletRequest request, User user) {
-		request.getSession().setAttribute(Constant.ATTR_USER, user);
+		request.getSession().setAttribute(Constants.ATTR_USER, user);
 		return CommonHelper.getValueFromCookie(request, "jsessionid");
 	}
 
@@ -35,29 +35,29 @@ public class AuthorizationSessionServiceImpl extends AuthorizationAbstract {
 		if(session==null) {
 			return 0;
 		} else {
-			boolean exists = session.getAttribute(Constant.ATTR_USER)!=null;
+			boolean exists = session.getAttribute(Constants.ATTR_USER)!=null;
 			return exists?1:0;
 		}
 	}
 
 	@Override
 	protected void saveVcode(HttpServletRequest request, String vcode) {
-		request.getSession(true).setAttribute(Constant.ATTR_VCODE, vcode);
+		request.getSession(true).setAttribute(Constants.ATTR_VCODE, vcode);
 	}
 
 	@Override
 	public String getCachedVcode(HttpServletRequest request) {
-		return this.getCachedStr(request, Constant.ATTR_VCODE);
+		return this.getCachedStr(request, Constants.ATTR_VCODE);
 	}
 
 	@Override
 	public void setDeniedPrivilegeName(HttpServletRequest request, String name) {
-		request.getSession().setAttribute(Constant.ATTR_DENIED_PRIVILEGE, name);
+		request.getSession().setAttribute(Constants.ATTR_DENIED_PRIVILEGE, name);
 	}
 
 	@Override
 	public String getDeniedPrivilegeName(HttpServletRequest request) {
-		return this.getCachedStr(request, Constant.ATTR_DENIED_PRIVILEGE);
+		return this.getCachedStr(request, Constants.ATTR_DENIED_PRIVILEGE);
 	}
 
 	private String getCachedStr(HttpServletRequest request, String attrName) {

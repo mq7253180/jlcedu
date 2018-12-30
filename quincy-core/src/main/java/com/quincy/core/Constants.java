@@ -1,6 +1,6 @@
 package com.quincy.core;
 
-public class Constant {
+public class Constants {
 	public final static String CLIENT_TYPE_P = "p";
 	public final static String CLIENT_TYPE_M = "m";
 	public final static String CLIENT_TYPE_J = "j";
