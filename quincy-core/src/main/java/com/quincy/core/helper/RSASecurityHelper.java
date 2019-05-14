@@ -55,8 +55,8 @@ public class RSASecurityHelper {
         Map<String, Object> keyMap = new HashMap<String, Object>(8);
         keyMap.put(PUBLIC_KEY, publicKey);
         keyMap.put(PRIVATE_KEY, privateKey);
-        keyMap.put(PUBLIC_KEY_BASE64, base64Encoder.encode(publicKey.getEncoded()));
-        keyMap.put(PRIVATE_KEY_BASE64, base64Encoder.encode(privateKey.getEncoded()));
+        keyMap.put(PUBLIC_KEY_BASE64, base64Encoder.encodeToString(publicKey.getEncoded()));
+        keyMap.put(PRIVATE_KEY_BASE64, base64Encoder.encodeToString(privateKey.getEncoded()));
         return keyMap;
     }
 
@@ -83,7 +83,7 @@ public class RSASecurityHelper {
 			case Cipher.DECRYPT_MODE: MAX_CRYPT_BLOCK = MAX_DECRYPT_BLOCK;break;
 			default:;
 		}
-    	Cipher cipher = Cipher.getInstance(KEY_ALGORITHM);
+		Cipher cipher = Cipher.getInstance(KEY_ALGORITHM);
 		cipher.init(opmode, key);
 		int loops = (plainTextData.length/MAX_CRYPT_BLOCK);
 		if(plainTextData.length%MAX_CRYPT_BLOCK>0)
@@ -108,7 +108,7 @@ public class RSASecurityHelper {
 
 	public static String byteArrayToString(byte[] data) {
 		StringBuilder stringBuilder = new StringBuilder();
-    	for(int i=0;i<data.length;i++) {
+    		for(int i=0;i<data.length;i++) {
 			// 取出字节的高四位 作为索引得到相应的十六进制标识符 注意无符号右移 
 			stringBuilder.append(HEX_CHAR[(data[i] & 0xf0) >>> 4]);
 			// 取出字节的低四位 作为索引得到相应的十六进制标识符 
@@ -120,7 +120,7 @@ public class RSASecurityHelper {
 		return stringBuilder.toString(); 
 	}
 
-	public static String sign(String privateKey, String encode, String content) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException, IOException {
+	public static String sign(String privateKey, String charset, String content) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException, IOException {
 		Decoder base64Decoder = Base64.getDecoder();
 		Encoder base64Encoder = Base64.getEncoder();
 		PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(base64Decoder.decode(privateKey));
@@ -128,19 +128,19 @@ public class RSASecurityHelper {
 		PrivateKey priKey = keyf.generatePrivate(priPKCS8);
 		Signature signature = Signature.getInstance(SIGNATURE_ALGORITHMS);
 		signature.initSign(priKey);
-		signature.update(content.getBytes(encode==null||encode.trim().length()==0?"UTF-8":encode.trim()));
+		signature.update(content.getBytes(charset==null||charset.trim().length()==0?"UTF-8":charset.trim()));
 		byte[] signed = signature.sign();
 		return new String(base64Encoder.encode(signed));
 	}
 
-	public static boolean verify(String publicKey, String signatureStr, String content, String encode) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException, IOException {
+	public static boolean verify(String publicKey, String signatureStr, String content, String charset) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException, IOException {
 		Decoder base64Decoder = Base64.getDecoder();
 		KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-		byte[] encodedKey = base64Decoder.decode(publicKey);
-		PublicKey pubKey = keyFactory.generatePublic(new X509EncodedKeySpec(encodedKey));
+		byte[] base64DecodedKey = base64Decoder.decode(publicKey);
+		PublicKey pubKey = keyFactory.generatePublic(new X509EncodedKeySpec(base64DecodedKey));
 		Signature signature = Signature.getInstance(SIGNATURE_ALGORITHMS);
 		signature.initVerify(pubKey);
-		signature.update(content.getBytes(encode==null||encode.trim().length()==0?"UTF-8":encode.trim()));
+		signature.update(content.getBytes(charset==null||charset.trim().length()==0?"UTF-8":charset.trim()));
 		boolean bverify = signature.verify(base64Decoder.decode(signatureStr));
 		return bverify;
 	}
@@ -148,10 +148,10 @@ public class RSASecurityHelper {
 	public static void main(String[] args) {
 		Map<String, Object> keyMap;
         try {
-        	String content = "ABCDEFGHIGKLMNOPQRSTUVWXYZ";
-        	for(int i=0;i<3;i++) {
-        		content += content;
-        	}
+        		String content = "ABCDEFGHIGKLMNOPQRSTUVWXYZ";
+        		for(int i=0;i<3;i++) {
+        			content += content;
+        		}
             keyMap = generateKeyPair();
             String publicKey = keyMap.get(PUBLIC_KEY_BASE64).toString().replaceAll("\r\n", "");
             String privateKey = keyMap.get(PRIVATE_KEY_BASE64).toString().replaceAll("\r\n", "");
@@ -179,5 +179,4 @@ public class RSASecurityHelper {
             e.printStackTrace();
         }
 	}
-
 }
