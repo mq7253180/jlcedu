@@ -9,21 +9,25 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.protocol.HTTP;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 
 public class HttpClientHelper {
 	public static String get(String url, Header[] headers) throws IOException {
@@ -38,7 +42,7 @@ public class HttpClientHelper {
 	}
 
 	public static String post(String url, Header[] headers, List<NameValuePair> nameValuePairList) throws IOException {
-		return post(url, headers, new UrlEncodedFormEntity(nameValuePairList, HTTP.UTF_8));
+		return post(url, headers, new UrlEncodedFormEntity(nameValuePairList, "UTF-8"));
 	}
 
 	public static String post(String url, Header[] headers, String body) throws IOException {
@@ -98,7 +102,7 @@ public class HttpClientHelper {
 	private static InputStream send(HttpUriRequest httpUriRequest, Header[] headers) throws ClientProtocolException, IOException {
 		if(headers!=null&&headers.length>0)
 			httpUriRequest.setHeaders(headers);
-		HttpClient httpClient = new DefaultHttpClient();
+		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 		HttpResponse response = httpClient.execute(httpUriRequest);
 		int statusCode = response.getStatusLine().getStatusCode();
 		if(statusCode==200) {
@@ -107,6 +111,52 @@ public class HttpClientHelper {
 		} else {
 			throw new HttpResponseException(statusCode, String.format("Abnormal HTTP Status Code: %s, URI: %s", statusCode, httpUriRequest.getURI()));
 		}
+	}
+
+	public static String reqInfo(HttpServletRequest request) {
+		StringBuffer url = request.getRequestURL();
+		String s = null;
+		Map<String, String[]> map = request.getParameterMap();
+		if(map!=null&&map.size()>0) {
+			Set<Entry<String, String[]>> set = map.entrySet();
+			url.append("?");
+			for(Entry<String, String[]> entry:set) {
+				url.append(entry.getKey());
+				url.append("=");
+				String[] values = entry.getValue();
+				url.append((values!=null&&values.length>0)?values[0]:"");
+				url.append("&");
+			}
+			s = url.substring(0, url.length()-1);
+		} else
+			s = url.toString();
+//		InputStream in = null;
+//		byte[] buf = null;
+//		BufferedReader br = request.getReader();
+		StringBuilder body = new StringBuilder();
+//		String line = null;
+		try {
+//			in = new BufferedInputStream(request.getInputStream());
+//			buf = new byte[in.available()];
+//			in.read(buf);
+			/*br = request.getReader();
+			while((line = br.readLine()) != null)
+				body.append(line);*/
+		} finally {
+//			if(in!=null)
+//				in.close();
+//			if(br!=null)
+//				br.close();
+		}
+		if(body.length()>0) {
+			StringBuilder result = new StringBuilder(s.length()+body.length()+100);
+			result.append("\r\nHTTP_REQ: ");
+			result.append(s);
+			result.append("\r\n");
+			result.append(body);
+			return result.toString();
+		} else 
+			return s;
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -122,4 +172,5 @@ public class HttpClientHelper {
 //		System.out.println(HttpClientHelper.post("http://localhost:8080/test", null, headers));
 		HttpClientHelper.saveAsFile("http://mmbiz.qpic.cn/mmbiz/wc7YNPm3YxU84aB22zTIBXGUDcGwYIJruDrwgwFzdK5BuS86Iic1Zzeb7tgP4BfjEHpcq7GCzPT0aBXeThm63rw/0?", null, "H:/aaa.gif");
 	}
+
 }
