@@ -32,6 +32,29 @@ var uri = $("#uri").val();
 			alert($.i18n.prop("msg.ie"));
 		}
 	}
+	$.ajaxWrapper = function(s) {
+		$.ajax({
+			url: s.url,
+			type: s.type,
+			dataType: s.dataType,
+			data: s.data,
+			complete: function(xhr, status) {
+				//alert("complete---"+xhr+"-"+status);
+			},
+			success: function(data) {
+				if(data.status==1) {
+					s.handle(data.data);
+				} else if(data.status==0) {
+					alert("跳登录页");
+				} else {
+					alert("系统繁忙");
+				}
+			},
+			error: function(xhr, status) {
+				alert("error---"+xhr+"-"+status);
+			}
+		});
+	};
 	$.fn.ajaxUploadFiles = function(s) {
 		var formData = new FormData();
 		var validationErrorMsg = "";
