@@ -32,7 +32,7 @@ var uri = $("#uri").val();
 			alert($.i18n.prop("msg.ie"));
 		}
 	}
-	$.ajaxWrapper = function(s) {
+	$.ajaxProxy = function(s) {
 		$.ajax({
 			url: s.url,
 			type: s.type,
