@@ -77,12 +77,7 @@ public class AuthorizationController {
 			return mv;
 		}
 		User user = userService.selectUserByLoginName(username);
-		if(user==null) {
-			mv.addObject(JlceduConstant.MV_ATTR_NAME_STATUS, -3);
-			mv.addObject(JlceduConstant.MV_ATTR_NAME_MSG, requestContext.getMessage("auth.failure.matched"));
-			return mv;
-		}
-		if(!password.equalsIgnoreCase(user.getPassword())) {
+		if(user==null||!password.equalsIgnoreCase(user.getPassword())) {
 			mv.addObject(JlceduConstant.MV_ATTR_NAME_STATUS, -3);
 			mv.addObject(JlceduConstant.MV_ATTR_NAME_MSG, requestContext.getMessage("auth.failure.matched"));
 			return mv;
