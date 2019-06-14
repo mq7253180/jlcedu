@@ -6,13 +6,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.jlcedu.JlceduConstant;
 import com.quincy.core.entity.User;
 import com.quincy.core.service.AuthorizationService;
 
 @Controller
 @RequestMapping("")
 public class RootController {
-	@Resource(name = "authorizationSessionServiceImpl")
+	@Resource(name = JlceduConstant.IMPL_AUTHORIZATION)
 	private AuthorizationService authorizationService;
 
 	@RequestMapping("")
