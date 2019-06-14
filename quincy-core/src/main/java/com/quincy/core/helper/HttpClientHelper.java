@@ -113,8 +113,26 @@ public class HttpClientHelper {
 		}
 	}
 
-	public static String reqInfo(HttpServletRequest request) {
-		StringBuffer url = request.getRequestURL();
+	public static String getRequestURIOrURL(HttpServletRequest request, String type) {
+//		InputStream in = null;
+//		byte[] buf = null;
+//		BufferedReader br = request.getReader();
+//		StringBuilder body = new StringBuilder();
+//		String line = null;
+//		try {
+//			in = new BufferedInputStream(request.getInputStream());
+//			buf = new byte[in.available()];
+//			in.read(buf);
+			/*br = request.getReader();
+			while((line = br.readLine()) != null)
+				body.append(line);*/
+//		} finally {
+//			if(in!=null)
+//				in.close();
+//			if(br!=null)
+//				br.close();
+//		}
+		StringBuffer url = "URI".equalsIgnoreCase(type)?new StringBuffer(request.getRequestURI()):request.getRequestURL();
 		String s = null;
 		Map<String, String[]> map = request.getParameterMap();
 		if(map!=null&&map.size()>0) {
@@ -130,33 +148,7 @@ public class HttpClientHelper {
 			s = url.substring(0, url.length()-1);
 		} else
 			s = url.toString();
-//		InputStream in = null;
-//		byte[] buf = null;
-//		BufferedReader br = request.getReader();
-		StringBuilder body = new StringBuilder();
-//		String line = null;
-		try {
-//			in = new BufferedInputStream(request.getInputStream());
-//			buf = new byte[in.available()];
-//			in.read(buf);
-			/*br = request.getReader();
-			while((line = br.readLine()) != null)
-				body.append(line);*/
-		} finally {
-//			if(in!=null)
-//				in.close();
-//			if(br!=null)
-//				br.close();
-		}
-		if(body.length()>0) {
-			StringBuilder result = new StringBuilder(s.length()+body.length()+100);
-			result.append("\r\nHTTP_REQ: ");
-			result.append(s);
-			result.append("\r\n");
-			result.append(body);
-			return result.toString();
-		} else 
-			return s;
+		return s;
 	}
 
 	public static void main(String[] args) throws IOException {

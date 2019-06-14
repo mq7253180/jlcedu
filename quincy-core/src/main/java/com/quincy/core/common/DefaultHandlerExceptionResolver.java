@@ -22,7 +22,7 @@ public class DefaultHandlerExceptionResolver implements HandlerExceptionResolver
 
 	@Override
 	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception e) {
-		log.error(HttpClientHelper.reqInfo(request), e);
+		log.error(HttpClientHelper.getRequestURIOrURL(request, "URL"), e);
 		String clientType = CommonHelper.clientType(request, handler);
 		String exception = Constants.CLIENT_TYPE_J.equals(clientType)?e.toString():this.getExceptionStackTrace(e, "<br/>", "&nbsp;");
 		ModelAndView mv = new ModelAndView(path+"_"+clientType);
