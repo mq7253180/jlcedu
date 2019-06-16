@@ -47,7 +47,7 @@ var uri = $("#uri").val();
 				} else if(data.status==0) {
 					alert("跳登录页");
 				} else {
-					alert("系统繁忙");
+					alert(data.status);
 				}
 			},
 			error: function(xhr, status) {
