@@ -121,6 +121,11 @@ public class RSASecurityHelper {
 	}
 
 	public static String sign(String privateKey, String charset, String content) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException, IOException {
+		charset = CommonHelper.trim(charset);
+		return sign(privateKey, content.getBytes(charset==null?"UTF-8":charset.trim()));
+	}
+
+	public static String sign(String privateKey, byte[] content) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException, IOException {
 		Decoder base64Decoder = Base64.getDecoder();
 		Encoder base64Encoder = Base64.getEncoder();
 		PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(base64Decoder.decode(privateKey));
@@ -128,7 +133,7 @@ public class RSASecurityHelper {
 		PrivateKey priKey = keyf.generatePrivate(priPKCS8);
 		Signature signature = Signature.getInstance(SIGNATURE_ALGORITHMS);
 		signature.initSign(priKey);
-		signature.update(content.getBytes(charset==null||charset.trim().length()==0?"UTF-8":charset.trim()));
+		signature.update(content);
 		byte[] signed = signature.sign();
 		return new String(base64Encoder.encode(signed));
 	}
