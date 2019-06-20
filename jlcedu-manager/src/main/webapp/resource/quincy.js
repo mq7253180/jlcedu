@@ -16,7 +16,7 @@ var uri = $("#uri").val();
 		}
 	}
 	$.i18n.properties({ 
-		name: "obor",
+		name: "quincy",
 		path: resourcePrefix+"/i18n",
 		mode: "map",//模式：变量或 Map
 		language: locale,
@@ -32,6 +32,29 @@ var uri = $("#uri").val();
 			alert($.i18n.prop("msg.ie"));
 		}
 	}
+	$.ajaxProxy = function(s) {
+		$.ajax({
+			url: s.url,
+			type: s.type,
+			dataType: s.dataType,
+			data: s.data,
+			complete: function(xhr, status) {
+				//alert("complete---"+xhr+"-"+status);
+			},
+			success: function(data) {
+				if(data.status==1) {
+					s.handle(data.data);
+				} else if(data.status==0) {
+					alert("跳登录页");
+				} else {
+					alert(data.status);
+				}
+			},
+			error: function(xhr, status) {
+				alert("error---"+xhr+"-"+status);
+			}
+		});
+	};
 	$.fn.ajaxUploadFiles = function(s) {
 		var formData = new FormData();
 		var validationErrorMsg = "";
