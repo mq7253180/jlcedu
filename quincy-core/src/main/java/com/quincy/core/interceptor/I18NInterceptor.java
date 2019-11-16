@@ -11,11 +11,16 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.quincy.core.helper.CommonHelper;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class I18NInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
-		localeResolver.setLocale(request, response, StringUtils.parseLocaleString(CommonHelper.getLocale(request)));
+		String locale = CommonHelper.getLocale(request);
+		localeResolver.setLocale(request, response, StringUtils.parseLocaleString(locale));
+		log.warn("LOCALE============={}", locale);
 		return true;
 	}
 
