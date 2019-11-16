@@ -19,6 +19,9 @@ import org.springframework.web.method.HandlerMethod;
 import com.quincy.core.Constants;
 import com.quincy.core.annotation.WithoutAjax;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class CommonHelper {
 	private static I18NSupport i18nChainHead;
 	private static String[] MOBILE_USER_AGENT_FLAGS = {"iPhone", "iPad", "Android"};
@@ -50,6 +53,7 @@ public class CommonHelper {
 			@Override
 			protected String resolve(HttpServletRequest request) {
 				String locale = CommonHelper.getFirstAsUri(request);
+				log.warn("FIRST_URI_AS_LOCALE==================={}", locale);
 				return Constants.KEY_LOCALE.equalsIgnoreCase(locale)?locale:null;
 			}
 		};
