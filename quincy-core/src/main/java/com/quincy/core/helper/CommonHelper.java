@@ -46,13 +46,20 @@ public class CommonHelper {
 				return CommonHelper.getValueFromParameter(request, Constants.KEY_LOCALE);
 			}
 		};
+		I18NSupport uriSupport = new I18NSupport() {
+			@Override
+			protected String resolve(HttpServletRequest request) {
+				String locale = CommonHelper.getFirstAsUri(request);
+				return Constants.KEY_LOCALE.equalsIgnoreCase(locale)?locale:null;
+			}
+		};
 		I18NSupport defaultSupport = new I18NSupport() {
 			@Override
 			protected String resolve(HttpServletRequest request) {
 				return getDefaultLocale(request);
 			}
 		};
-		headerSupport.setNext(headerSupport).setNext(parameterSupport).setNext(cookieSupport).setNext(defaultSupport);
+		headerSupport.setNext(headerSupport).setNext(parameterSupport).setNext(cookieSupport).setNext(uriSupport).setNext(defaultSupport);
 		i18nChainHead = headerSupport;
 	}
 
