@@ -26,7 +26,7 @@
 				<jdbc.slave.password>xxx</jdbc.slave.password>
 				<redis.host>127.0.0.1</redis.host>
 				<redis.port>6379</redis.port>
-				<redis.pwd>www</redis.pwd>
+				<redis.pwd>foobared</redis.pwd>
 				<domain>localhost</domain>
 				<wechat.CorpID>wx5823bf96d3bd56c7</wechat.CorpID>
 				<wechat.token>QDG6eK</wechat.token>
@@ -40,8 +40,8 @@
 			<id>pro</id>
 			<properties>
 				<prefix.resource>http://resource.jlcedu.maqiangcgq.com</prefix.resource>
-				<log4j.path>/logs/web/jlcedu-portal.log</log4j.path>
-				<log4j.level>ERROR</log4j.level>
+				<log4j.path>/quincy/tmp/logs/jlcedu/log4j.log</log4j.path>
+				<log4j.level>WARN</log4j.level>
 				<jdbc.master.url>jdbc:mysql://localhost:3306/jlcedu?zeroDateTimeBehavior=convertToNull</jdbc.master.url>
 				<jdbc.master.username>jlcedu</jdbc.master.username>
 				<jdbc.master.password>xxx</jdbc.master.password>
@@ -50,7 +50,7 @@
 				<jdbc.slave.password>xxx</jdbc.slave.password>
 				<redis.host>127.0.0.1</redis.host>
 				<redis.port>6379</redis.port>
-				<redis.pwd>www</redis.pwd>
+				<redis.pwd>foobared</redis.pwd>
 				<domain>jlcedu.maqiangcgq.com</domain>
 				<wechat.CorpID>wxd861e20edfcdb923</wechat.CorpID>
 				<wechat.token>69gh1OrHdwjSeygBoj7oHGUnseXxcv</wechat.token>
