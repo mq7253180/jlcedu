@@ -42,10 +42,10 @@
 				<prefix.resource>http://resource.jlcedu.maqiangcgq.com</prefix.resource>
 				<log4j.path>/quincy/tmp/logs/jlcedu/log4j.log</log4j.path>
 				<log4j.level>WARN</log4j.level>
-				<jdbc.master.url>jdbc:mysql://localhost:3306/jlcedu?zeroDateTimeBehavior=convertToNull</jdbc.master.url>
+				<jdbc.master.url>localhost:3306/jlcedu</jdbc.master.url>
 				<jdbc.master.username>jlcedu</jdbc.master.username>
 				<jdbc.master.password>xxx</jdbc.master.password>
-				<jdbc.slave.url>jdbc:mysql://localhost:3306/jlcedu?zeroDateTimeBehavior=convertToNull</jdbc.slave.url>
+				<jdbc.slave.url>localhost:3306/jlcedu</jdbc.slave.url>
 				<jdbc.slave.username>jlcedu</jdbc.slave.username>
 				<jdbc.slave.password>xxx</jdbc.slave.password>
 				<redis.host>127.0.0.1</redis.host>
