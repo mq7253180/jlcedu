@@ -38,10 +38,10 @@
 
 	<bean id="attributeTemplateDirectiveModelBean" class="com.quincy.core.freemarker.AttributeTemplateDirectiveModelBean"/>
     <bean id="i18NTemplateDirectiveModelBean" class="com.quincy.core.freemarker.I18NTemplateDirectiveModelBean">
-    	<property name="properties" ref="corePropertiesFactoryBean" />
+		<property name="properties" ref="corePropertiesFactoryBean" />
     </bean>
     <bean id="propertiesTemplateDirectiveModelBean" class="com.quincy.core.freemarker.PropertiesTemplateDirectiveModelBean">
-    	<property name="properties" ref="corePropertiesFactoryBean" />
+		<property name="properties" ref="corePropertiesFactoryBean" />
     </bean>
 
 	<!-- i18n -->
@@ -106,5 +106,4 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
-
 </beans>
