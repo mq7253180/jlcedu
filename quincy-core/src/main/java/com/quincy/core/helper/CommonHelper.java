@@ -161,16 +161,10 @@ public class CommonHelper {
 
 	public static String getValueFromCookie(HttpServletRequest request, String key) {
 		Cookie[] cookies = request.getCookies();
-		if(cookies!=null) {
+		if(cookies!=null&&cookies.length>0) {
 			for(Cookie cookie:cookies) {
-				String name = cookie.getName();
-				if(name!=null) {
-					name = name.trim();
-					if(key.equals(name)) {
-						String value = cookie.getValue();
-						return value;
-					}
-				}
+				if(cookie.getName().equals(key))
+					return cookie.getValue();
 			}
 		}
 		return null;
@@ -178,17 +172,14 @@ public class CommonHelper {
 
 	public static String getValue(HttpServletRequest request, String key) {
 		String value = request.getHeader(key);
-		if(value!=null) {
+		if(value!=null)
 			return value;
-		}
 		value = request.getParameter(key);
-		if(value!=null) {
+		if(value!=null)
 			return value;
-		}
 		value = getValueFromCookie(request, key);
-		if(value!=null) {
+		if(value!=null)
 			return value;
-		}
 		return null;
 	}
 
