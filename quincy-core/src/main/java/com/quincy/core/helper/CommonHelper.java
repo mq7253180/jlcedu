@@ -33,7 +33,7 @@ public class CommonHelper {
 		I18NSupport headerSupport = new I18NSupport() {
 			@Override
 			protected String resolve(HttpServletRequest request) {
-				return getValueFromHeader(request, Constants.KEY_LOCALE);
+				return request.getHeader(Constants.KEY_LOCALE);
 			}
 		};
 		I18NSupport cookieSupport = new I18NSupport() {
@@ -45,7 +45,7 @@ public class CommonHelper {
 		I18NSupport parameterSupport = new I18NSupport() {
 			@Override
 			protected String resolve(HttpServletRequest request) {
-				return getValueFromParameter(request, Constants.KEY_LOCALE);
+				return request.getParameter(Constants.KEY_LOCALE);
 			}
 		};
 		I18NSupport uriSupport = new I18NSupport() {
@@ -159,28 +159,6 @@ public class CommonHelper {
 		}
 	}
 
-	public static String getValueFromHeader(HttpServletRequest request, String key) {
-		String value = request.getHeader(key);
-		if(value!=null) {
-			value = value.trim();
-			if(value.length()>0) {
-				return value;
-			}
-		}
-		return null;
-	}
-
-	public static String getValueFromParameter(HttpServletRequest request, String key) {
-		String value = request.getParameter(key);
-		if(value!=null) {
-			value = value.trim();
-			if(value.length()>0) {
-				return value;
-			}
-		}
-		return null;
-	}
-
 	public static String getValueFromCookie(HttpServletRequest request, String key) {
 		Cookie[] cookies = request.getCookies();
 		if(cookies!=null) {
@@ -190,12 +168,7 @@ public class CommonHelper {
 					name = name.trim();
 					if(key.equals(name)) {
 						String value = cookie.getValue();
-						if(value!=null) {
-							value = value.trim();
-							if(value.length()>0) {
-								return value;
-							}
-						}
+						return value;
 					}
 				}
 			}
@@ -204,11 +177,11 @@ public class CommonHelper {
 	}
 
 	public static String getValue(HttpServletRequest request, String key) {
-		String value = getValueFromHeader(request, key);
+		String value = request.getHeader(key);
 		if(value!=null) {
 			return value;
 		}
-		value = getValueFromParameter(request, key);
+		value = request.getParameter(key);
 		if(value!=null) {
 			return value;
 		}
