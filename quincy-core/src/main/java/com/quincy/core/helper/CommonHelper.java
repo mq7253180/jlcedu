@@ -25,12 +25,8 @@ public class CommonHelper {
 	public final static String[] SUPPORTED_LOCALES = {"zh_cn", "zh_tw", "en_us"};
 
 	public static String getLocale(HttpServletRequest request) {
-		String locale = trim(i18nChainHead.support(request));
-		for(String l:SUPPORTED_LOCALES) {
-			if(l.equalsIgnoreCase(locale))
-				return locale;
-		}
-		return getDefaultLocale(request);
+		String locale = i18nChainHead.support(request);
+		return locale==null?getDefaultLocale(request):locale;
 	}
 
 	static {
@@ -73,16 +69,14 @@ public class CommonHelper {
 		}
 
 		public final String support(HttpServletRequest request) {
-			String locale = this.resolve(request);
+			String locale = trim(this.resolve(request));
 			if(locale!=null) {
-				locale = locale.trim();
-				if(locale.length()==0&&this.next!=null) {
-					locale = this.next.support(request);
+				for(String supportedLocale:SUPPORTED_LOCALES) {
+					if(supportedLocale.equalsIgnoreCase(locale))
+						return locale;
 				}
-			} else if(this.next!=null) {
-				locale = this.next.support(request);
 			}
-			return locale;
+			return locale = this.next==null?null:this.next.support(request);
 		}
 	}
 
