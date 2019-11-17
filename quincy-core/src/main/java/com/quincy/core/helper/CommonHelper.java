@@ -22,52 +22,43 @@ import com.quincy.core.annotation.WithoutAjax;
 public class CommonHelper {
 	private static I18NSupport i18nChainHead;
 	private final static String[] MOBILE_USER_AGENT_FLAGS = {"iPhone", "iPad", "Android"};
-	private final static String[] SUPPORTED_LOCALES = {"zh_cn", "zh_tw", "en_us"};
+	public final static String[] SUPPORTED_LOCALES = {"zh_cn", "zh_tw", "en_us"};
 
 	public static String getLocale(HttpServletRequest request) {
-		return i18nChainHead.support(request);
+		String locale = trim(i18nChainHead.support(request));
+		for(String l:SUPPORTED_LOCALES) {
+			if(l.equalsIgnoreCase(locale))
+				return locale;
+		}
+		return getDefaultLocale(request);
 	}
 
 	static {
 		I18NSupport headerSupport = new I18NSupport() {
 			@Override
 			protected String resolve(HttpServletRequest request) {
-				return CommonHelper.getValueFromHeader(request, Constants.KEY_LOCALE);
+				return getValueFromHeader(request, Constants.KEY_LOCALE);
 			}
 		};
 		I18NSupport cookieSupport = new I18NSupport() {
 			@Override
 			protected String resolve(HttpServletRequest request) {
-				return CommonHelper.getValueFromCookie(request, Constants.KEY_LOCALE);
+				return getValueFromCookie(request, Constants.KEY_LOCALE);
 			}
 		};
 		I18NSupport parameterSupport = new I18NSupport() {
 			@Override
 			protected String resolve(HttpServletRequest request) {
-				return CommonHelper.getValueFromParameter(request, Constants.KEY_LOCALE);
+				return getValueFromParameter(request, Constants.KEY_LOCALE);
 			}
 		};
 		I18NSupport uriSupport = new I18NSupport() {
 			@Override
 			protected String resolve(HttpServletRequest request) {
-				String firstSection = CommonHelper.getFirstAsUri(request);
-				String locale = null;
-				for(String l:SUPPORTED_LOCALES) {
-					if(l.equalsIgnoreCase(firstSection)) {
-						locale = l;
-						break;
-					}
-				}
-				return locale;
+				return getFirstAsUri(request);
 			}
 		};
-		I18NSupport defaultSupport = new I18NSupport() {
-			@Override
-			protected String resolve(HttpServletRequest request) {
-				return getDefaultLocale(request);
-			}
-		};
-		headerSupport.setNext(headerSupport).setNext(parameterSupport).setNext(cookieSupport).setNext(uriSupport).setNext(defaultSupport);
+		headerSupport.setNext(headerSupport).setNext(parameterSupport).setNext(cookieSupport).setNext(uriSupport);
 		i18nChainHead = headerSupport;
 	}
 
