@@ -34,6 +34,7 @@ public class SystemServiceImpl implements SystemService {
 
 	@ReadOnly
 	public List<CourseSchedule> getScheduleAsStudent(String userId) {
+		init();
 		return systemMapper.selectScheduleAsStudent(userId);
 	}
 
